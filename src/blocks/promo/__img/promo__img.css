@@ -1,0 +1,29 @@
+.promo__img{
+  width: 100%;
+  max-width: 722px;
+  aspect-ratio: 722/244;
+  background-image: url("../../../images/promo__img.svg");
+  background-repeat: no-repeat;
+  margin-top: 102px;
+  align-self: end;
+  background-size: cover;
+  z-index: 1;
+}
+
+@media screen and (max-width: 768px){
+  .promo__img{
+    margin-top: 140px;
+  }
+}
+
+@media screen and (max-width: 426px){
+  .promo__img{
+    width: auto;
+    min-height: 230px;
+    margin-top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 40px;
+    position: absolute;
+  }
+}

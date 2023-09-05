@@ -1,0 +1,16 @@
+.search-form__container {
+  display: flex;
+  width: 100%;
+  margin: 0 30px 0 0;
+  align-items: center;
+}
+
+@media screen and (max-width: 426px) {
+  .search-form__container{
+    margin-right: 0;
+    border-radius: 9px;
+    background: #2F2F2F;
+    padding: 19px;
+    box-sizing: border-box;
+  }
+}

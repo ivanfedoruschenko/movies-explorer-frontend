@@ -1,0 +1,16 @@
+.about-me__wrapper {
+  display: flex;
+  width: 100%;
+  margin: 66px 0 0;
+  justify-content: space-between;
+  gap: 49px;
+}
+
+@media screen and (max-width: 426px) {
+  .about-me__wrapper{
+    margin-top: 60px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
+}

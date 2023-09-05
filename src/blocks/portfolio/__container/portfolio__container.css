@@ -1,0 +1,19 @@
+.portfolio__container {
+  display: flex;
+  flex-direction: column;
+  width: 89%;
+  max-width: 1140px;
+  margin-bottom: 125px;
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio__container{
+    margin-bottom: 90px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .portfolio__container{
+    margin-bottom: 70px;
+  }
+}

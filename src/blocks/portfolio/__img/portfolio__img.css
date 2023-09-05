@@ -1,0 +1,10 @@
+.portfolio__img {
+  object-fit: contain;
+}
+
+@media screen and (max-width: 426px) {
+  .portfolio__img{
+    width: 18px;
+    height: 28px;
+  }
+}

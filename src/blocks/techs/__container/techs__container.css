@@ -1,0 +1,8 @@
+.techs__container{
+  margin: 100px 0;
+  display: flex;
+  flex-direction: column;
+  width: 89%;
+  max-width: 1140px;
+  align-items: center;
+}

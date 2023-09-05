@@ -1,0 +1,8 @@
+.movie-card__like{
+  min-width: 24px;
+  min-height: 24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+}

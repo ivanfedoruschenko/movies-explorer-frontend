@@ -1,0 +1,26 @@
+.profile__btn-save {
+  width: 100%;
+  min-height: 45px;
+  border-radius: 3px;
+  background: #3456F3;
+  color: #FFF;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  border: none;
+  cursor: pointer;
+}
+
+.profile__btn-save:disabled{
+  background: #F8F8F8;
+  color: #C2C2C2;
+  cursor: default;
+}
+
+
+@media screen and (max-width: 426px) {
+  .profile__btn-save{
+    font-size: 12px;
+  }
+}

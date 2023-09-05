@@ -1,0 +1,19 @@
+.promo__container{
+  width: 89%;
+  max-width: 1140px;
+  display: flex;
+  flex-direction: column;
+  margin: 124px auto 0;
+}
+
+@media screen and (max-width: 768px){
+  .promo__container{
+    margin-top: 374px;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 426px){
+  .promo__container{
+    margin-top: 257px;
+  }
+}

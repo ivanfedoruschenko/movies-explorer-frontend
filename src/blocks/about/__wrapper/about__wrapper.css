@@ -1,0 +1,19 @@
+.about__wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  max-width: 550px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px){
+  .about__wrapper{
+    gap: 22px;
+  }
+}
+
+@media screen and (max-width: 476px){
+  .about__wrapper{
+    gap: 16px;
+  }
+}

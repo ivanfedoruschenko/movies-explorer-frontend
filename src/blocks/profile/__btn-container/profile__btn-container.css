@@ -1,0 +1,8 @@
+.profile__btn-container {
+  margin: 220px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}

@@ -1,0 +1,10 @@
+.header{
+  width: 100%;
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: transparent;
+  z-index: 3;
+}

@@ -1,0 +1,8 @@
+.movies-list{
+  width:100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-top: 1px solid #424242;
+  padding-top: 80px;
+}
