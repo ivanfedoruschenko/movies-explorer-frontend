@@ -13,12 +13,15 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 
 function App() {
   const location = useLocation();
+  const path =
+    location.pathname === '/' ||
+    location.pathname === '/profile' ||
+    location.pathname === '/movies' ||
+    location.pathname === '/saved-movies';
 
   return (
     <div className='app'>
-      {location.pathname !== '/sign-up' && location.pathname !== '/sign-in' && (
-        <Header />
-      )}
+      {path && <Header />}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/sign-up' element={<Register />} />
@@ -26,10 +29,9 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<Movies />} />
         <Route path='/saved-movies' element={<SavedMovies />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
-      {location.pathname !== '/sign-up' && location.pathname !== '/sign-in' && (
-        <Footer />
-      )}
+      {path && <Footer />}
     </div>
   );
 }
