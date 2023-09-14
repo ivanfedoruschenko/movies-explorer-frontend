@@ -39,6 +39,9 @@ export default function Register(props) {
           value={formValue.name}
           name='name'
           onChange={handleChange}
+          minLength='2'
+          maxLength='15'
+          placeholder='Имя'
           required
         />
         <span></span>
@@ -51,10 +54,11 @@ export default function Register(props) {
           value={formValue.email}
           name='email'
           onChange={handleChange}
+          placeholder='Email'
           required
         />
       </label>
-      <label className='auth__label'>
+      <label className='auth__label auth__label_type_register'>
         Пароль
         <input
           className='input auth__input auth__input_type_error'
@@ -62,6 +66,9 @@ export default function Register(props) {
           value={formValue.password}
           name='password'
           onChange={handleChange}
+          minLength='8'
+          maxLength='20'
+          placeholder='Пароль'
           required
         />
         <span className='auth__error'>Что-то пошло не так...</span>

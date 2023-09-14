@@ -3,12 +3,12 @@
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  margin-left: 44px;
+  margin-left: 46px;
 }
 
 @media screen and (max-width: 768px) {
   .navigation__container{
-    visibility: hidden;
+    display: none;
     transform: translateX(100%);
     position: absolute;
     top: 0;
@@ -22,5 +22,12 @@
     box-sizing: border-box;
     transition: 0.3s ease-in-out;
     z-index: 5;
+  }
+}
+
+@media screen and (max-width: 426px){
+  .navigation__container{
+    padding-top: 144px;
+    padding-bottom: 23px;
   }
 }

@@ -3,6 +3,7 @@
   background-color: transparent;
   box-sizing: border-box;
   color: #cccccc;
+  padding-left: 0;
 }
 
 .input:focus{

@@ -5,3 +5,15 @@
   display: flex;
   flex-direction: column;
 }
+
+@media screen and (max-width: 768px) {
+  .about__container{
+    width: 87%;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .about__container{
+    width: 89%;
+  }
+}

@@ -1,0 +1,19 @@
+.navigation__link-profile{
+  text-decoration: none;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+
+@media screen and (max-width: 426px) {
+  .navigation__link-profile{
+    line-height: 12px;
+    display: flex;
+    gap: 7px;
+  }
+}

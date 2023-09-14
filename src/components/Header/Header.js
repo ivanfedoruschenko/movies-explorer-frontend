@@ -4,24 +4,28 @@ import { useState } from 'react';
 import Navigation from '../Navigation/Navigation';
 
 export default function Header() {
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   const menuUnLogin = (
     <div className='header__auth-container'>
-      <Link className='header__link header__link_type_register' to='/sign-up'>
+      <Link className='header__link header__link_type_register' to='/signup'>
         Регистрация
       </Link>
-      <Link className='header__link header__link_type_login' to='/sign-in'>
+      <Link className='header__link header__link_type_login' to='/signin'>
         Войти
       </Link>
     </div>
   );
 
   return (
-    <header className='header'>
+    <header
+      className={`header ${
+        isLogged ? 'header_theme_green' : 'header_theme_black'
+      }`}
+    >
       <div className='header__container'>
         <Link to='/'>
-          <div className='logo' alt='Лого' />
+          <div className='logo button-opacity' />
         </Link>
         {isLogged ? <Navigation /> : menuUnLogin}
       </div>

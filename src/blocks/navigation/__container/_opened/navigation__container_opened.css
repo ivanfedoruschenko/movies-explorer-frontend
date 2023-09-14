@@ -1,5 +1,5 @@
 .navigation__container_opened{
-  visibility: visible;
+  display: flex;
   transform: translateX(0);
-  transition: transform 0.3s linear;
+  transition: 0.3s linear;
 }

@@ -1,8 +1,9 @@
 .about{
-  padding-top: 110px;
+  padding-top: 112px;
   padding-bottom: 110px;
   width: 100%;
   background: #202020;
+  box-sizing: border-box;
 }
 
 @media screen and (max-width: 768px){
@@ -14,7 +15,7 @@
 
 @media screen and (max-width: 476px){
   .about{
-    padding-top: 70px;
+    padding-top: 72px;
     padding-bottom: 70px;
   }
 }

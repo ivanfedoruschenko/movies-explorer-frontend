@@ -8,6 +8,12 @@
   gap: 14px;
 }
 
+@media screen and (max-width: 768px) {
+  .search-form__wrapper{
+    padding-left: 22px;
+  }
+}
+
 @media screen and (max-width: 426px) {
   .search-form__wrapper{
     height: auto;

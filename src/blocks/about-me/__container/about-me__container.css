@@ -8,6 +8,7 @@
 
 @media screen and (max-width: 768px) {
   .about-me__container{
+    width: 87%;
     margin-top: 90px;
     margin-bottom: 90px;
   }
@@ -15,7 +16,8 @@
 
 @media screen and (max-width: 426px) {
   .about-me__container{
-    margin-top: 70px;
+    width: 91%;
+    margin-top: 72px;
     margin-bottom: 70px;
   }
 }

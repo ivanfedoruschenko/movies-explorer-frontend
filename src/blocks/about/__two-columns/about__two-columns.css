@@ -14,7 +14,7 @@
 @media screen and (max-width: 426px){
   .about__two-columns{
     flex-direction: column;
-    gap: 56px;
-    margin-top: 60px;
+    gap: 59px;
+    margin-top: 62px;
   }
 }

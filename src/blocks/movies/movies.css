@@ -4,7 +4,13 @@
   width: 92.2%;
   max-width: 1140px;
   margin: 0 auto;
-  padding-top: 74px;
+  padding-top: 70px;
+}
+
+@media screen and (max-width: 768px) {
+  .movies{
+    padding-top: 80px;
+  }
 }
 
 @media screen and (max-width: 426px) {

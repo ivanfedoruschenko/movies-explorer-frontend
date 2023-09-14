@@ -6,6 +6,12 @@
   gap: 49px;
 }
 
+@media screen and (max-width: 600px) {
+ .about-me__wrapper{
+   gap: 30px;
+ }
+}
+
 @media screen and (max-width: 426px) {
   .about-me__wrapper{
     margin-top: 60px;

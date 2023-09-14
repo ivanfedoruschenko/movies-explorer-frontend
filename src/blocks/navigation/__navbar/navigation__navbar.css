@@ -7,5 +7,6 @@
 @media screen and (max-width: 768px) {
   .navigation__navbar{
     flex-direction: column;
+    gap: 25px;
   }
 }

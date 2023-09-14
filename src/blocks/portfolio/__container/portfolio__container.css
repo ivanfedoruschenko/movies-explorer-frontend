@@ -9,11 +9,13 @@
 @media screen and (max-width: 768px) {
   .portfolio__container{
     margin-bottom: 90px;
+    width: 87%;
   }
 }
 
 @media screen and (max-width: 426px) {
   .portfolio__container{
     margin-bottom: 70px;
+    width: 91%;
   }
 }

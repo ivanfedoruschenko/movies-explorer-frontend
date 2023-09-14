@@ -16,11 +16,18 @@
 
 @media screen and (max-width: 768px){
   .techs__list-element{
+    min-width: 84px;
     font-size: 12px;
     letter-spacing: -0.48px;
   }
 
   .techs__list-element:last-child{
     align-self: start;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .techs__list-element {
+   min-height: 57px;
   }
 }

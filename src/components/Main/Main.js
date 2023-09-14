@@ -8,12 +8,12 @@ import Footer from '../Footer/Footer';
 
 export default function Main() {
   return (
-    <div>
+    <main>
       <Promo />
       <AboutProject />
       <Techs />
       <AboutMe />
       <Portfolio />
-    </div>
+    </main>
   );
 }

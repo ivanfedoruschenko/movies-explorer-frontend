@@ -1,16 +1,17 @@
 .auth {
   display: flex;
   flex-direction: column;
-  margin: auto;
   width: 100%;
   max-width: 396px;
   height: 100%;
   align-self: center;
+  margin: auto;
 }
 
 
 @media screen and (max-width: 426px) {
   .auth{
+    margin-top: 56px;
     max-width: 260px;
     align-items: center;
   }

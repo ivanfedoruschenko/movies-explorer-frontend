@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function AboutMe() {
   return (
-    <div className='about-me'>
+    <section className='about-me'>
       <div className='about-me__container'>
         <h2 className='title-block'>Студент</h2>
         <div className='about-me__wrapper'>
@@ -19,6 +19,7 @@ export default function AboutMe() {
             <a
               href='https://github.com/ivanfedoruschenko'
               className='about-me__link'
+              target='_blank'
             >
               Github
             </a>
@@ -26,6 +27,6 @@ export default function AboutMe() {
           <img src={imgPhoto} className='about-me__img' alt='' />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

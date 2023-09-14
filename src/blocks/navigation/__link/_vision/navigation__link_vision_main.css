@@ -1,0 +1,9 @@
+.navigation__link_vision_main {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__link_vision_main{
+    display: inline-block;
+  }
+}

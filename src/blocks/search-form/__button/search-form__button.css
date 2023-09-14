@@ -12,10 +12,6 @@
   border-radius: 48px;
   background: #4285F4;
   border: none;
-}
+  min-width: 58px;
 
-@media screen and (max-width: 426px) {
-  .search-form__button{
-    min-width: 58px;
-  }
 }

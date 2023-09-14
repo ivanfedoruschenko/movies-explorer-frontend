@@ -1,0 +1,11 @@
+@media screen and (max-width: 768px) {
+  .active{
+    border-bottom: 2px solid #FFF;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .active{
+    border-bottom: 2px solid #FFF;
+  }
+}

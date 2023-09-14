@@ -12,6 +12,7 @@
 @media screen and (max-width: 768px){
   .techs__subtitle{
     font-size: 12px;
+    line-height: 18px;
     margin-top: 22px;
     letter-spacing: -0.48px;
   }
@@ -20,5 +21,6 @@
 @media screen and (max-width: 426px){
   .techs__subtitle{
     margin-top: 24px;
+    line-height: 16px;
   }
 }

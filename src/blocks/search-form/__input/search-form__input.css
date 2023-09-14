@@ -13,6 +13,12 @@
   outline: none;
 }
 
+@media screen and (max-width: 768px) {
+  .search-form__input{
+    margin-left: 18px;
+  }
+}
+
 @media screen and (max-width: 426px) {
   .search-form__input{
     font-size: 14px;

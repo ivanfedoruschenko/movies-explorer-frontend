@@ -3,4 +3,18 @@
   flex-direction: column;
   margin: 123px 0 0;
   width: 100%;
+  box-sizing: border-box;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__form{
+    margin-top: 96px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .profile__form{
+    margin-top: 80px;
+  }
+}
+

@@ -6,3 +6,15 @@
   width: 100%;
   position: relative;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__btn-container{
+    margin-top: 210px;
+  }
+}
+
+@media screen and (max-width: 469px) {
+  .profile__btn-container{
+    margin-top: 379px;
+  }
+}

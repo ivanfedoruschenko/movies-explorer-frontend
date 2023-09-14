@@ -7,14 +7,14 @@ export default function MovieCard() {
     setIsLiked(!isLiked);
   }
 
-  const likeClassname = `movie-card__like ${
+  const likeClassname = `button-opacity movie-card__like ${
     isLiked ? 'movie-card__like_type_active' : 'movie-card__like_type_disable'
   }`;
   return (
     <div className='movie-card'>
-      <img className='movie-card__img' src={cardImg} alt='' />
+      <img className='movie-card__img' src={cardImg} alt='Постер' />
       <div className='movie-card__container'>
-        <p className='movie-card__name'>33 слова о дизайне</p>
+        <h2 className='movie-card__name'>33 слова о дизайне</h2>
         <button onClick={handleLikeClick} className={likeClassname} />
       </div>
       <span className='movie-card__duration'>1ч52м</span>

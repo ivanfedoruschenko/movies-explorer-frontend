@@ -8,18 +8,28 @@ export default function Profile() {
   };
 
   return (
-    <div className='profile'>
+    <main className='profile'>
       <div className='profile__container'>
-        <h2 className='title'>Привет, Виталий!</h2>
+        <h1 className='title'>Привет, Виталий!</h1>
 
         <form className='profile__form'>
           <label className='profile__label'>
             Имя
-            <input className='input profile__input' value='Виталий' />
+            <input
+              className='input profile__input'
+              value='Виталий'
+              placeholder='Виталий'
+              minLength='2'
+              maxLength='20'
+            />
           </label>
           <label className='profile__label'>
             Email
-            <input className='input profile__input' value='pochta@yandex.ru' />
+            <input
+              className='input profile__input'
+              value='pochta@yandex.ru'
+              placeholder='pochta@yandex.ru'
+            />
           </label>
         </form>
 
@@ -28,7 +38,7 @@ export default function Profile() {
             <p className='profile__error'>
               При обновлении профиля произошла ошибка.
             </p>
-            <button className='button-opacity profile__btn-save'>
+            <button type='submit' className='button-opacity profile__btn-save'>
               Сохранить
             </button>
           </div>
@@ -36,6 +46,7 @@ export default function Profile() {
           <div className='profile__btn-container'>
             <button
               onClick={handleClickEdit}
+              type='button'
               className='link-opacity profile__edit'
             >
               Редактировать
@@ -46,6 +57,6 @@ export default function Profile() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
 export default function AboutProject() {
   return (
-    <div className='about'>
+    <section className='about'>
       <div className='about__container'>
         <h2 className='title-block'>О проекте</h2>
         <div className='about__two-columns'>
@@ -30,6 +30,6 @@ export default function AboutProject() {
           <p className='about__prog-way'>Front-end</p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

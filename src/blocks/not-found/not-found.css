@@ -1,13 +1,13 @@
 .not-found {
   display: flex;
   position: absolute;
-  top: calc(50% - 80px);
+  top: calc(50% - 100px);
   flex-direction: column;
   width: 100%;
 }
 
 @media screen and (max-width: 426px) {
   .not-found{
-    top: calc(50% - 40px);
+    top: calc(50% - 55px);
   }
 }

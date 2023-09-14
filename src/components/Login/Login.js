@@ -43,20 +43,23 @@ export default function Login(props) {
           value={formValue.email}
           name='email'
           onChange={handleChange}
+          placeholder='email'
           required
         />
       </label>
-      <label className='auth__label'>
+      <label className='auth__label auth__label_type_login'>
         Пароль
         <input
           className='input auth__input'
           type='password'
           value={formValue.password}
           name='password'
+          placeholder='password'
+          minLength='8'
+          maxLength='20'
           onChange={handleChange}
           required
         />
-        <span></span>
       </label>
     </AuthWindow>
   );

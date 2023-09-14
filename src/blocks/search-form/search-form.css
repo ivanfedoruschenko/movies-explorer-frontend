@@ -1,6 +1,6 @@
 .search-form {
   box-sizing: border-box;
-  margin: 70px 0;
+  margin: 0 0 70px;
   width: 100%;
   display: flex;
   border-radius: 9px;
@@ -10,19 +10,20 @@
   align-items: center;
 }
 
-@media screen and (max-width: 426px) {
-.search-form{
-  padding-right: 19px;
-}
+@media screen and (max-width: 768px) {
+  .search-form{
+    margin-bottom: 109px;
+  }
 }
 
 @media screen and (max-width: 426px) {
   .search-form{
-    margin-top: 80px;
+    max-height: max-content;
+    margin-top: 0;
     margin-bottom: 45px;
     flex-direction: column;
     background-color: transparent;
-    height: auto;
+    height: 100%;
     gap: 46px;
     justify-content: center;
     align-items: center;

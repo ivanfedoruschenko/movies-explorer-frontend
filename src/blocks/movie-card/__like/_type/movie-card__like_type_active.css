@@ -3,5 +3,5 @@
 }
 
 .movie-card__like_type_active:hover{
-  background-image: url("../../../../images/movie-card__like_type_cross.png");
+  background-image: url("../../../../images/movie-card__like_type_cross.svg");
 }

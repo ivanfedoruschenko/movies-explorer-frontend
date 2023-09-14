@@ -3,9 +3,9 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 export default function Movies() {
   return (
-    <div className='movies'>
+    <main className='movies'>
       <SearchForm />
       <MoviesCardList />
-    </div>
+    </main>
   );
 }

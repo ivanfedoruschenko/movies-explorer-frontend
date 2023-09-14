@@ -1,8 +1,8 @@
-import arrow from '../../images/portfolio__img-arrow.png';
+import arrow from '../../images/portfolio__img-arrow.svg';
 
 export default function Portfolio() {
   return (
-    <div className='portfolio'>
+    <section className='portfolio'>
       <div className='portfolio__container'>
         <h2 className='portfolio__title'>Портфолио</h2>
         <ul className='portfolio__list'>
@@ -35,6 +35,6 @@ export default function Portfolio() {
           </li>
         </ul>
       </div>
-    </div>
+    </section>
   );
 }

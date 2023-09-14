@@ -1,0 +1,9 @@
+.auth__label_type_register{
+  margin-bottom: 110px;
+}
+
+@media screen and (max-width: 426px) {
+  .auth__label_type_register{
+    margin-bottom: 199px;
+  }
+}
