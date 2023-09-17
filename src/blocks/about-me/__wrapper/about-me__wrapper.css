@@ -12,7 +12,7 @@
  }
 }
 
-@media screen and (max-width: 426px) {
+@media screen and (max-width: 500px) {
   .about-me__wrapper{
     margin-top: 60px;
     flex-direction: column;

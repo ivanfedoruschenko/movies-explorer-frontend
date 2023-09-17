@@ -29,7 +29,7 @@ export default function Register(props) {
       button={'Зарегистрироваться'}
       link={'Войти'}
       text={'Уже зарегистрированы?'}
-      toLink={'/sign-in'}
+      toLink={'/signin'}
     >
       <label className='auth__label'>
         Имя

@@ -7,3 +7,15 @@
   border-top: 1px solid #424242;
   padding-top: 6px;
 }
+
+@media screen and (max-width: 768px) {
+  .movie-card__duration{
+    margin-top: 26px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .movie-card__duration{
+    margin-top: 24px;
+  }
+}

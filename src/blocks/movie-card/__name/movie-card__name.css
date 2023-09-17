@@ -5,3 +5,17 @@
   line-height: normal;
   margin: 0;
 }
+
+@media screen and (max-width: 768px){
+  .movie-card__name{
+    margin-top: 2px;
+  }
+}
+
+@media screen and (max-width: 426px){
+  .movie-card__name{
+    font-size: 12px;
+    font-style: normal;
+    margin-top: 0;
+  }
+}

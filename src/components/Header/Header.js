@@ -3,24 +3,24 @@ import logo from '../../images/header__logo.svg';
 import { useState } from 'react';
 import Navigation from '../Navigation/Navigation';
 
-export default function Header() {
+export default function Header(props) {
   const [isLogged, setIsLogged] = useState(true);
 
   const menuUnLogin = (
-    <div className='header__auth-container'>
+    <nav className='header__auth-container'>
       <Link className='header__link header__link_type_register' to='/signup'>
         Регистрация
       </Link>
       <Link className='header__link header__link_type_login' to='/signin'>
         Войти
       </Link>
-    </div>
+    </nav>
   );
 
   return (
     <header
       className={`header ${
-        isLogged ? 'header_theme_green' : 'header_theme_black'
+        props.path ? 'header_theme_green' : 'header_theme_black'
       }`}
     >
       <div className='header__container'>

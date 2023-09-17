@@ -5,17 +5,13 @@ export default function MoviesCardList() {
   return (
     <section className='movies-list'>
       {/*<p className='movies-list__no-find'>Ничего не найдено</p> */}
-      <div className='movies-list__container'>
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-      </div>
-      <button className='movies-list__button'>Ещё</button>
+      <ul className='movies-list__container'>
+        <MovieCard name='33 пингвина' />
+        <MovieCard name='33 пингвина' />
+        <MovieCard name='33 пингвина' />
+        <MovieCard name='33 пингвина' />
+      </ul>
+      <button className='button-opacity movies-list__button'>Ещё</button>
     </section>
   );
 }

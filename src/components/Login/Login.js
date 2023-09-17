@@ -33,7 +33,7 @@ export default function Login(props) {
       register={false}
       link={'Регистрация'}
       text={'Ещё не зарегистрированы?'}
-      toLink={'/sign-up'}
+      toLink={'/signup'}
     >
       <label className='auth__label'>
         Email

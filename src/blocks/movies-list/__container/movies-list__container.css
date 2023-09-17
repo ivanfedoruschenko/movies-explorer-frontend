@@ -1,8 +1,12 @@
 .movies-list__container{
   display: grid;
   grid-template-columns: repeat(auto-fit,270px);
+  justify-content: center;
   column-gap: 20px;
   row-gap: 38px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 @media screen and (max-width: 768px) {

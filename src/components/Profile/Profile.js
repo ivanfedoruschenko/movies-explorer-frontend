@@ -1,21 +1,39 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function Profile() {
   const [isEdit, setIsEdit] = useState(false);
+  const [formValue, setFormValue] = useState({
+    name: '',
+    email: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  };
+
+  React.useEffect(() => {
+    setFormValue({ name: '', email: '' });
+  }, []);
   const handleClickEdit = () => {
     setIsEdit(!isEdit);
   };
 
   return (
     <main className='profile'>
-      <div className='profile__container'>
+      <section className='profile__container'>
         <h1 className='title'>Привет, Виталий!</h1>
 
         <form className='profile__form'>
           <label className='profile__label'>
             Имя
             <input
+              onChange={handleChange}
               className='input profile__input'
               value='Виталий'
               placeholder='Виталий'
@@ -26,6 +44,7 @@ export default function Profile() {
           <label className='profile__label'>
             Email
             <input
+              onChange={handleChange}
               className='input profile__input'
               value='pochta@yandex.ru'
               placeholder='pochta@yandex.ru'
@@ -56,7 +75,7 @@ export default function Profile() {
             </Link>
           </div>
         )}
-      </div>
+      </section>
     </main>
   );
 }

@@ -1,3 +1,8 @@
+.footer__list-element{
+  display: flex;
+
+}
+
 @media screen and (max-width: 426px){
   .footer__list-element{
     text-align: center;

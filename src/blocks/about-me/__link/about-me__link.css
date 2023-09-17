@@ -3,18 +3,21 @@
   font-size: 14px;
   font-weight: 500;
   line-height: normal;
-  margin:  100px 0 0;
+  margin:  123px 0 0;
   text-decoration: none;
 }
 
 @media screen and (max-width: 768px) {
   .about-me__link{
-    margin-top: 87px;
+    display: flex;
+    height: 100%;
+    align-items: end;
+    margin-top: 0;
   }
 }
 
-@media screen and (max-width: 426px) {
+@media screen and (max-width: 500px) {
   .about-me__link{
-    margin-top: 40px;
+    margin-top: 90px;
   }
 }

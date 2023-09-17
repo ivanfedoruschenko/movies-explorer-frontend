@@ -5,7 +5,6 @@
   background-image: url("../../../images/promo__img.svg");
   background-repeat: no-repeat;
   margin-top: 102px;
-  margin-right: 70px;
   align-self: end;
   background-size: cover;
   z-index: 1;
@@ -26,7 +25,7 @@
   .promo__img{
     width: 100%;
     min-height: 230px;
-    background-image: url("../../../images/promo__img_320.png");
+    background-image: url("../../../images/promo__img_320.svg");
     margin: 60px 0 40px;
   }
 }

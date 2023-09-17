@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 export default function AuthWindow(props) {
   return (
     <main className='auth'>
-      <div className='logo'></div>
+      <Link to='/'>
+        <div className='logo button-opacity' />
+      </Link>
       <h1 className='title auth__title'>{props.title}</h1>
       <form className='auth__form' onSubmit={props.submit} name={props.name}>
         {props.children}

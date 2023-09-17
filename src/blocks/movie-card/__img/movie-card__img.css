@@ -1,3 +1,9 @@
 .movie-card__img {
   width: 100%;
 }
+
+@media screen and (max-width: 426px){
+  .movie-card__img{
+    min-height: 168px;
+  }
+}

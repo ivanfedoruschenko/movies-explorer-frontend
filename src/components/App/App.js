@@ -3,16 +3,18 @@ import Main from '../Main/Main';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
-import AuthWindow from '../AuthWindow/AuthWIndow';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import SavedMovies from '../SavedMovies/SavedMovies';
 
 function App() {
   const location = useLocation();
+
+  const pathHeaderGreen = location.pathname === '/';
+
   const pathHeader =
     location.pathname === '/' ||
     location.pathname === '/profile' ||
@@ -26,7 +28,7 @@ function App() {
 
   return (
     <div className='app'>
-      {pathHeader && <Header />}
+      {pathHeader && <Header path={pathHeaderGreen} />}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/signup' element={<Register />} />

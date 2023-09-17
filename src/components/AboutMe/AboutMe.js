@@ -18,13 +18,13 @@ export default function AboutMe() {
             </p>
             <a
               href='https://github.com/ivanfedoruschenko'
-              className='about-me__link'
+              className='link-opacity about-me__link'
               target='_blank'
             >
               Github
             </a>
           </div>
-          <img src={imgPhoto} className='about-me__img' alt='' />
+          <img src={imgPhoto} className='about-me__img' alt='Фото' />
         </div>
       </div>
     </section>

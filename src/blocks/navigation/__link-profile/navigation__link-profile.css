@@ -9,6 +9,13 @@
   align-items: center;
 }
 
+@media screen and (max-width: 768px) {
+  .navigation__link-profile{
+    line-height: 12px;
+    margin-left: 9px;
+    margin-bottom: 3px;
+  }
+}
 
 @media screen and (max-width: 426px) {
   .navigation__link-profile{

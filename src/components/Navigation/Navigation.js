@@ -6,8 +6,7 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinkClassName = ({ isActive }) =>
-    'link-opacity navigation__link navigation__link_vision_main ' +
-    (isActive ? 'active' : '');
+    'link-opacity navigation__link ' + (isActive ? 'active' : '');
   const handleMenuOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -17,7 +16,7 @@ export default function Navigation() {
       <button className='navigation__button' onClick={handleMenuOpen}></button>
       <div
         className={`navigation__container ${
-          isOpen && 'navigation__container_opened'
+          isOpen ? 'navigation__container_opened' : ''
         }`}
       >
         <button
@@ -25,8 +24,11 @@ export default function Navigation() {
           type='button'
           onClick={handleMenuOpen}
         />
-        <div className='navigation__navbar'>
-          <NavLink className={navLinkClassName} to='/'>
+        <nav className='navigation__navbar'>
+          <NavLink
+            className={`${navLinkClassName} navigation__link_vision_main`}
+            to='/'
+          >
             Главная
           </NavLink>
           <NavLink className={navLinkClassName} to='/movies'>
@@ -35,7 +37,7 @@ export default function Navigation() {
           <NavLink className={navLinkClassName} to='/saved-movies'>
             Сохраненные фильмы
           </NavLink>
-        </div>
+        </nav>
         <Link className='link-opacity navigation__link-profile' to='/profile'>
           Аккаунт
           <div className='navigation__profile-icon'></div>

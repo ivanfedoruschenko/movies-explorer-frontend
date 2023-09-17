@@ -4,7 +4,13 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  min-height: 269px;
+  min-height: 228px;
+}
+
+@media screen and (max-width: 768px) {
+  .movie-card{
+    min-height: 267px;
+  }
 }
 
 @media screen and (max-width: 426px) {

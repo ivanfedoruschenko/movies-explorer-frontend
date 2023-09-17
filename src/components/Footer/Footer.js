@@ -10,7 +10,7 @@ export default function Footer() {
           <ul className='footer__list'>
             <li className='footer__list-element'>
               <a
-                className='footer__link'
+                className='link-opacity footer__link'
                 href='https://practicum.yandex.ru/'
                 target='_blank'
               >
@@ -19,7 +19,7 @@ export default function Footer() {
             </li>
             <li className='footer__list-element'>
               <a
-                className='footer__link'
+                className='link-opacity footer__link'
                 href='https://github.com/ivanfedoruschenko'
                 target='_blank'
               >

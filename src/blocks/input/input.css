@@ -4,6 +4,7 @@
   box-sizing: border-box;
   color: #cccccc;
   padding-left: 0;
+  font-style: inherit;
 }
 
 .input:focus{
