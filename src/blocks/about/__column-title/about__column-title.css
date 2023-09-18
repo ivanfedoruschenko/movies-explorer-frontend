@@ -1,0 +1,16 @@
+.about__column-title{
+  width: 100%;
+  margin: 0;
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.8px;
+}
+
+@media screen and (max-width: 476px){
+  .about__column-title{
+    font-size: 18px;
+    letter-spacing: -0.72px;
+  }
+}

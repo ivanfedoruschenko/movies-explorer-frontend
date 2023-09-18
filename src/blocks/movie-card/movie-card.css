@@ -1,0 +1,20 @@
+.movie-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 228px;
+}
+
+@media screen and (max-width: 768px) {
+  .movie-card{
+    min-height: 267px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .movie-card{
+    min-height: 246px;
+  }
+}

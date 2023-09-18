@@ -1,0 +1,30 @@
+.portfolio__list-element{
+  display: flex;
+  width: 100%;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.portfolio__list-element:nth-child(even){
+  border-bottom: 1px solid #424242;
+  border-top: 1px solid #424242;
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio__list-element{
+    padding-top: 19px;
+    padding-bottom: 20px;
+  }
+
+  .portfolio__list-element:nth-child(even){
+    border-top: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio__list-element {
+    padding-top: 19px;
+    padding-bottom: 19px;
+  }
+}

@@ -1,0 +1,18 @@
+.navigation__navbar{
+  display: flex;
+  gap: 16px;
+  align-self: center;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__navbar{
+    flex-direction: column;
+    gap: 26px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .navigation__navbar{
+    gap: 18px;
+  }
+}

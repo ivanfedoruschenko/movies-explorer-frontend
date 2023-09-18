@@ -1,0 +1,15 @@
+.navigation__button{
+  display: none;
+}
+
+@media screen and (max-width: 768px){
+  .navigation__button{
+    display: block;
+    border: none;
+    align-self: end;
+    background-color: transparent;
+    background-image: url("../../../images/navigation__icon-burger.svg");
+    width: 44px;
+    height: 44px;
+  }
+}

@@ -1,0 +1,26 @@
+.navigation__link{
+  text-decoration: none;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__link{
+    font-size: 18px;
+    line-height: normal;
+    align-self: center;
+    padding-bottom: 4px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .navigation__link{
+    padding-bottom: 7px;
+  }
+}

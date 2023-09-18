@@ -1,0 +1,9 @@
+.auth__title{
+  margin: 40px 0 0;
+}
+
+@media screen and (max-width: 426px) {
+  .auth__title{
+    margin-top: 50px;
+  }
+}

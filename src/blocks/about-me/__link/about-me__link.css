@@ -1,0 +1,23 @@
+.about-me__link {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  margin:  123px 0 0;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .about-me__link{
+    display: flex;
+    height: 100%;
+    align-items: end;
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-me__link{
+    margin-top: 90px;
+  }
+}

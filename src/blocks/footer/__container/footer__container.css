@@ -1,0 +1,14 @@
+.footer__container {
+  display: flex;
+  width: 92.2%;
+  max-width: 1140px;
+  margin: 81px 0 20px;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 426px) {
+  .footer__container{
+    width: 94%;
+    margin-top: 79px;
+  }
+}

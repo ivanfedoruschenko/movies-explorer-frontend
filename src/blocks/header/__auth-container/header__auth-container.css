@@ -1,0 +1,11 @@
+.header__auth-container{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+@media screen and (max-width: 426px){
+  .header__auth-container{
+    gap: 14px;
+  }
+}

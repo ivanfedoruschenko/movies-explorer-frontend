@@ -1,0 +1,19 @@
+.not-found {
+  display: flex;
+  margin: auto auto 60px;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .not-found{
+    margin-bottom: 222px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .not-found{
+    margin-bottom: 30px;
+  }
+}

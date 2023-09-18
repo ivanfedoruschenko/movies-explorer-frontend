@@ -1,0 +1,33 @@
+.navigation__container{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-left: 46px;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__container{
+    display: none;
+    transform: translateX(100%);
+    position: absolute;
+    top: 0;
+    right: 0;
+    flex-direction: column;
+    max-width: 520px;
+    width: 100%;
+    min-height: 100vh;
+    background: #202020;
+    padding: 159px 0 90px;
+    box-sizing: border-box;
+    transition: 0.3s ease-in-out;
+    z-index: 5;
+  }
+}
+
+@media screen and (max-width: 426px){
+  .navigation__container{
+    padding-top: 144px;
+    padding-bottom: 23px;
+  }
+}

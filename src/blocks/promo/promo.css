@@ -1,0 +1,24 @@
+.promo{
+  width: 100%;
+  display: flex;
+  background: #073042;
+  min-height: 560px;
+  padding-bottom: 60px;
+  position: relative;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .promo{
+    min-height: 844px;
+    padding-bottom: 70px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .promo{
+    padding-bottom: 0;
+    min-height: 630px;
+  }
+}

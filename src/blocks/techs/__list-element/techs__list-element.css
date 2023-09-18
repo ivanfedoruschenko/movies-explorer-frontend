@@ -1,0 +1,33 @@
+.techs__list-element {
+  display: flex;
+  min-width: 90px;
+  min-height: 60px;
+  border-radius: 10px;
+  background: #303030;
+  color: #FFF;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.56px;
+  margin: 0;
+}
+
+@media screen and (max-width: 768px){
+  .techs__list-element{
+    min-width: 84px;
+    font-size: 12px;
+    letter-spacing: -0.48px;
+  }
+
+  .techs__list-element:last-child{
+    align-self: start;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .techs__list-element {
+   min-height: 57px;
+  }
+}

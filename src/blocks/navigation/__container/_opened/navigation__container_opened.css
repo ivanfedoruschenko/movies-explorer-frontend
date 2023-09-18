@@ -1,0 +1,5 @@
+.navigation__container_opened{
+  display: flex;
+  transform: translateX(0);
+  transition: 0.3s linear;
+}

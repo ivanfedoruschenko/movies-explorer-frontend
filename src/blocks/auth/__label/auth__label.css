@@ -1,0 +1,10 @@
+.auth__label{
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  color: #8B8B8B;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+}

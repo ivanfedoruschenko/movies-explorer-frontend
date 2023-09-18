@@ -1,0 +1,18 @@
+.portfolio__img {
+  object-fit: contain;
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio__img{
+    padding-top: 5px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .portfolio__img{
+    padding-top: 0;
+    width: 10px;
+    height: 10px;
+  }
+}

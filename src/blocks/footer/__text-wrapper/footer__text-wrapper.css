@@ -1,0 +1,14 @@
+.footer__text-wrapper{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 0;
+}
+
+@media screen and (max-width: 426px) {
+  .footer__text-wrapper{
+    margin-top: 31px;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+}

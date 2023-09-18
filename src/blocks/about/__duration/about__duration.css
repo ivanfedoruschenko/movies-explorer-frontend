@@ -1,0 +1,20 @@
+.about__duration{
+  width: 100%;
+  display: grid;
+  grid-template-rows: 36px 31px;
+  grid-template-columns: 1fr 4fr;
+  justify-items: center;
+  margin: 110px 0 0;
+}
+
+@media screen and (max-width: 768px){
+  .about__duration{
+    margin-top: 91px;
+  }
+}
+
+@media screen and (max-width: 476px){
+  .about__duration{
+    margin-top: 60px;
+    grid-template-columns: 1.8fr 3.2fr;  }
+}

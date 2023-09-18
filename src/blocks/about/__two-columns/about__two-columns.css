@@ -1,0 +1,20 @@
+.about__two-columns{
+  display: flex;
+  width: 100%;
+  gap: 40px;
+  margin-top: 70px;
+}
+
+@media screen and (max-width: 768px){
+  .about__two-columns{
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 426px){
+  .about__two-columns{
+    flex-direction: column;
+    gap: 59px;
+    margin-top: 62px;
+  }
+}

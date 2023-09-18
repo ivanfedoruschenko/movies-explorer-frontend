@@ -1,0 +1,15 @@
+.profile__link{
+  color: #FF004D;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+  margin-top: 16px;
+}
+
+@media screen and (max-width: 426px) {
+  .profile__link{
+    font-size: 12px;
+  }
+}

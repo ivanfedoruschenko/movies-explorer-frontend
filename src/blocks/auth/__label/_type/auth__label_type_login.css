@@ -1,0 +1,9 @@
+.auth__label_type_login{
+  margin-bottom: 197px;
+}
+
+@media screen and (max-width: 426px) {
+  .auth__label_type_login{
+    margin-bottom: 285px;
+  }
+}

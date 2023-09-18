@@ -1,0 +1,11 @@
+.about-me__text-container{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+}
+
+@media screen and (max-width: 500px) {
+  .about-me__text-container{
+    order: 2;
+  }
+}

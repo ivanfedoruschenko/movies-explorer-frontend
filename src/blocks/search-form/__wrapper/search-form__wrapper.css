@@ -1,0 +1,24 @@
+.search-form__wrapper{
+  display: flex;
+  border-left: 1px solid #424242;
+  height: 40px;
+  padding-left: 27px;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .search-form__wrapper{
+    padding-left: 22px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .search-form__wrapper{
+    height: auto;
+    border-left: none;
+    padding-left: 0;
+    padding-right: 7px;
+  }
+}

@@ -1,0 +1,23 @@
+.movies-list__button{
+  margin: 62px 0 81px;
+  border-radius: 6px;
+  background: #2F2F2F;
+  max-width: 320px;
+  min-height: 36px;
+  width: 100%;
+  border: none;
+  align-self: center;
+  color: #FFF;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 426px) {
+  .movies-list__button{
+    max-width: 240px;
+    margin-top: 60px;
+  }
+}
