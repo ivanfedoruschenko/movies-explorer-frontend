@@ -10,7 +10,11 @@ export default function AuthWindow(props) {
       <h1 className='title auth__title'>{props.title}</h1>
       <form className='auth__form' onSubmit={props.submit} name={props.name}>
         {props.children}
-        <button type='submit' className='button-opacity auth__button'>
+        <button
+          type='submit'
+          className='button-opacity auth__button'
+          disabled={props.error}
+        >
           {props.button}
         </button>
       </form>

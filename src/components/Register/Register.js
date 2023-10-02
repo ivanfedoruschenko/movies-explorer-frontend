@@ -8,13 +8,21 @@ export default function Register(props) {
     password: '',
   });
 
+  const handleValidation = (check) => {
+    if (check) {
+      props.setError(false);
+    } else {
+      props.setError(true);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormValue({
       ...formValue,
       [name]: value,
     });
+    handleValidation(e.target.closest('form').checkValidity());
   };
 
   const handleSubmit = (e) => {
@@ -30,6 +38,7 @@ export default function Register(props) {
       link={'Войти'}
       text={'Уже зарегистрированы?'}
       toLink={'/signin'}
+      error={props.error}
     >
       <label className='auth__label'>
         Имя
@@ -44,7 +53,6 @@ export default function Register(props) {
           placeholder='Имя'
           required
         />
-        <span></span>
       </label>
       <label className='auth__label'>
         Email
@@ -61,7 +69,9 @@ export default function Register(props) {
       <label className='auth__label auth__label_type_register'>
         Пароль
         <input
-          className='input auth__input auth__input_type_error'
+          className={`input auth__input  ${
+            props.error && 'auth__input_type_error'
+          }`}
           type='password'
           value={formValue.password}
           name='password'
@@ -71,7 +81,7 @@ export default function Register(props) {
           placeholder='Пароль'
           required
         />
-        <span className='auth__error'>Что-то пошло не так...</span>
+        {props.error && <span className='auth__error'>{props.errorText}</span>}
       </label>
     </AuthWindow>
   );

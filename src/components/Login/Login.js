@@ -7,6 +7,14 @@ export default function Login(props) {
     password: '',
   });
 
+  const handleValidation = (check) => {
+    if (check) {
+      props.setError(false);
+    } else {
+      props.setError(true);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -14,6 +22,7 @@ export default function Login(props) {
       ...formValue,
       [name]: value,
     });
+    handleValidation(e.target.closest('form').checkValidity());
   };
 
   const handleSubmit = (e) => {
@@ -34,6 +43,7 @@ export default function Login(props) {
       link={'Регистрация'}
       text={'Ещё не зарегистрированы?'}
       toLink={'/signup'}
+      error={props.error}
     >
       <label className='auth__label'>
         Email
@@ -50,7 +60,9 @@ export default function Login(props) {
       <label className='auth__label auth__label_type_login'>
         Пароль
         <input
-          className='input auth__input'
+          className={`input auth__input  ${
+            props.error && 'auth__input_type_error'
+          }`}
           type='password'
           value={formValue.password}
           name='password'
@@ -60,6 +72,7 @@ export default function Login(props) {
           onChange={handleChange}
           required
         />
+        {props.error && <span className='auth__error'>{props.errorText}</span>}
       </label>
     </AuthWindow>
   );

@@ -15,6 +15,10 @@
   cursor: pointer;
 }
 
+.movies-list__button:focus{
+  outline: none;
+}
+
 @media screen and (max-width: 426px) {
   .movies-list__button{
     max-width: 240px;
