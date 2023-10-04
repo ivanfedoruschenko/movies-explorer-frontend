@@ -1,38 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthWindow from '../AuthWindow/AuthWIndow';
+import { useForm } from '../../hooks/useForm';
 
 export default function Login(props) {
-  const [formValue, setFormValue] = useState({
-    email: '',
-    password: '',
-  });
+  const { values, isValid, handleChange, resetForm } = useForm();
 
-  const handleValidation = (check) => {
-    if (check) {
-      props.setError(false);
-    } else {
-      props.setError(true);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-    handleValidation(e.target.closest('form').checkValidity());
-  };
+  useEffect(() => {
+    resetForm();
+  }, [resetForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onLoginUser({ ...formValue });
+    props.onLoginUser({ ...values });
   };
-
-  React.useEffect(() => {
-    setFormValue({ email: '', password: '' });
-  }, []);
 
   return (
     <AuthWindow
@@ -43,14 +23,14 @@ export default function Login(props) {
       link={'Регистрация'}
       text={'Ещё не зарегистрированы?'}
       toLink={'/signup'}
-      error={props.error}
+      error={isValid}
     >
       <label className='auth__label'>
         Email
         <input
           className='input auth__input'
           type='email'
-          value={formValue.email}
+          value={values.email ? values.email : ''}
           name='email'
           onChange={handleChange}
           placeholder='email'
@@ -61,10 +41,10 @@ export default function Login(props) {
         Пароль
         <input
           className={`input auth__input  ${
-            props.error && 'auth__input_type_error'
+            !isValid && 'auth__input_type_error'
           }`}
           type='password'
-          value={formValue.password}
+          value={values.password ? values.password : ''}
           name='password'
           placeholder='password'
           minLength='8'
@@ -72,7 +52,7 @@ export default function Login(props) {
           onChange={handleChange}
           required
         />
-        {props.error && <span className='auth__error'>{props.errorText}</span>}
+        {!isValid && <span className='auth__error'>{props.errorText}</span>}
       </label>
     </AuthWindow>
   );

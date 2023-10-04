@@ -29,7 +29,6 @@ export default function MoviesCardList({
   savedMovies,
   isLiked,
   inSearch,
-  noResult,
   foundedMovies,
 }) {
   const [showMovies, setShowMovies] = useState(
@@ -46,9 +45,7 @@ export default function MoviesCardList({
     <section className='movies-list'>
       {inSearch ? (
         <Preloader />
-      ) : foundedMovies.length === 0 || noResult ? (
-        <p className='movies-list__no-find'>Ничего не найдено</p>
-      ) : (
+      ) : foundedMovies.length ? (
         <ul className='movies-list__container'>
           {showMovies.map((movie) => {
             return (
@@ -63,6 +60,8 @@ export default function MoviesCardList({
             );
           })}
         </ul>
+      ) : (
+        <p className='movies-list__no-find'>Ничего не найдено</p>
       )}
       {foundedMovies.length > nextStep && (
         <button

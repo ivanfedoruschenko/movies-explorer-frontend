@@ -1,56 +1,47 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useForm } from '../../hooks/useForm';
 
 export default function Profile(props) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
 
-  const handleValidation = (check) => {
-    if (check) {
-      props.setError(false);
-    } else {
-      props.setError(true);
-    }
-  };
+  const { isValid, values, errors, handleChange, setValues, resetForm } =
+    useForm();
 
   React.useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser]);
+    resetForm();
+  }, [resetForm]);
 
-  function handleChangeName(e) {
-    setName(e.target.value);
-    handleValidation(e.target.closest('form').checkValidity());
-  }
-
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-    handleValidation(e.target.closest('form').checkValidity());
-  }
+  React.useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [setValues, currentUser.name, currentUser.email]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     props.onUpdateUser({
-      name: name,
-      email: email,
+      name: values.name,
+      email: values.email,
     });
   };
   return (
     <main className='profile'>
       <section className='profile__container'>
-        <h1 className='title'>Привет, {name}!</h1>
+        <h1 className='title'>Привет, {currentUser.name}!</h1>
 
         <form className='profile__form' onSubmit={handleSubmit}>
           <label className='profile__label'>
             Имя
             <input
-              onChange={handleChangeName}
+              onChange={handleChange}
               className='input profile__input'
               type='text'
-              value={name || ''}
+              value={values.name ? values.name : ''}
+              name='name'
               placeholder='Имя'
               minLength='2'
               maxLength='20'
@@ -60,23 +51,23 @@ export default function Profile(props) {
           <label className='profile__label'>
             Email
             <input
-              onChange={handleChangeEmail}
+              onChange={handleChange}
+              name='email'
               type='email'
               className='input profile__input'
-              value={email || ''}
+              value={values.email ? values.email : ''}
               placeholder='Email'
+              pattern='^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$'
               disabled={!props.isEdit}
             />
           </label>
           {props.isEdit ? (
             <div className='profile__btn-container'>
-              {props.error && (
-                <p className='profile__error'>{props.errorText}</p>
-              )}
+              {errors && <p className='profile__error'>{props.errorText}</p>}
               <button
                 type='submit'
                 className='button-opacity profile__btn-save'
-                disabled={props.error}
+                disabled={!isValid}
               >
                 Сохранить
               </button>

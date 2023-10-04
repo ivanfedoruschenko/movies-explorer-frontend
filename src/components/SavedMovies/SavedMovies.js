@@ -1,6 +1,5 @@
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
-import { useState } from 'react';
 
 export default function SavedMovies(props) {
   return (
@@ -14,6 +13,8 @@ export default function SavedMovies(props) {
         setPreload={props.setPreload}
         shortMovie={props.shortMovie}
         searchText={props.searchText}
+        errorSearch={props.errorSearch}
+        error={props.error}
         setSearchText={props.setSearchText}
       />
       <MoviesCardList

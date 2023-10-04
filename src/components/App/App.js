@@ -1,5 +1,5 @@
 import './app.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Main from '../Main/Main';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -20,7 +20,9 @@ function App() {
   const [foundedMovies, setFoundedMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [checkboxAllChecked, setCheckboxAllChecked] = React.useState(false);
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(
+    localStorage.getItem('isLogin') || { isLoggedIn: false }
+  );
   const [currentUser, setCurrentUser] = React.useState({});
   const [error, setError] = React.useState(true);
   const [errorTextRegister, setErrorTextRegister] = React.useState('');
@@ -33,6 +35,7 @@ function App() {
   const [checkboxSaveChecked, setCheckboxSaveChecked] = React.useState(false);
   const [searchTextMovie, setSearchTextMovie] = React.useState('');
   const [searchTextSavedMovie, setSearchTextSavedMovie] = React.useState('');
+  const [errorSearch, setErrorSearch] = React.useState('');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -52,18 +55,20 @@ function App() {
     setEditProfile(true);
   };
 
-  const handleNoResults = () => {
-    setNoResult(!noResult);
-  };
-
   function signOut() {
     localStorage.clear();
     setLoggedIn(false);
     navigate('/', { replace: true });
   }
 
-  function searchSaveMovie(value, searchMovie) {
+  function searchSaveMovie(value) {
     localStorage.setItem('searchSaveMovieValue', value);
+    if (value == null) {
+      setError(true);
+      setErrorSearch('Нужно ввести ключевое слово');
+    } else {
+      setError(false);
+    }
     if (checkboxSaveChecked) {
       const findShortMovies = savedMovies.filter((searchMovie) => {
         return (
@@ -90,6 +95,11 @@ function App() {
     }
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
     setMovies(JSON.parse(localStorage.getItem('movies')) || []);
+
+    if (savedMovies.length === 0) {
+      setNoResult(true);
+    }
+    setNoResult(false);
   }
 
   function searchMovie(value) {
@@ -105,6 +115,13 @@ function App() {
     moviesApi
       .getMovies()
       .then((res) => {
+        console.log(value);
+        if (value === '') {
+          setError(true);
+          setErrorSearch('Нужно ввести ключевое слово');
+        } else {
+          setError(false);
+        }
         if (checkboxAllChecked) {
           const findShortMovies = res.filter((movie) => {
             return (
@@ -128,10 +145,17 @@ function App() {
             [...JSON.parse(localStorage.getItem('searchAllMovies'))] || []
           );
         }
+        if (foundedMovies.length === 0) {
+          setNoResult(true);
+        } else {
+          setNoResult(false);
+        }
         localStorage.setItem('movies', JSON.stringify(res));
         setMovies(JSON.parse(localStorage.getItem('movies')) || []);
       })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+      .catch((error) => {
+        console.log(`Ошибка: ${error}`);
+      });
   }
 
   function handleChangeAllCheckbox(e) {
@@ -157,8 +181,11 @@ function App() {
       .register(name, email, password)
       .then((response) => {
         if (response) {
-          setCurrentUser(response);
-          navigate('/signin', { replace: true });
+          setCurrentUser({
+            name: response.name,
+            email: response.email,
+          });
+          navigate('/movies', { replace: true });
           setError(false);
         }
       })
@@ -180,7 +207,10 @@ function App() {
     mainApi
       .patchUserInfo(data)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser({
+          name: res.name,
+          email: res.email,
+        });
         setEditProfile(false);
       })
       .catch((error) => {
@@ -244,7 +274,6 @@ function App() {
       .login(email, password)
       .then((data) => {
         if (data.token) {
-          setCurrentUser(data);
           localStorage.setItem('token', data.token);
           setLoggedIn(true);
           navigate('/movies', { replace: true });
@@ -268,12 +297,16 @@ function App() {
           if (res) {
             setCurrentUser(res);
             setLoggedIn(true);
-            navigate('/', { replace: true });
+            navigate('/movies', { replace: true });
           }
         })
         .catch((error) => console.log(`Ошибка: ${error}`));
     }
   };
+
+  React.useEffect(() => {
+    localStorage.setItem('isLogin', JSON.stringify(setLoggedIn));
+  }, [setLoggedIn]);
 
   React.useEffect(() => {
     tokenCheck();
@@ -297,6 +330,18 @@ function App() {
         setCurrentUser(res);
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
+  }, []);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getUserInfo()
+        .then((user) => {
+          setCurrentUser(user);
+          setLoggedIn(true);
+        })
+        .catch((err) => console.log(`Ошибка: ${err}`));
+    }
   }, []);
 
   React.useEffect(() => {
@@ -367,11 +412,12 @@ function App() {
                 element={Movies}
                 loggedIn={loggedIn}
                 inSearch={inSearch}
-                showNoResults={handleNoResults}
                 searchMovie={searchMovie}
+                errorSearch={errorSearch}
                 changeCheckbox={handleChangeAllCheckbox}
                 setPreload={setPreload}
                 movies={movies}
+                error={error}
                 searchText={searchTextMovie}
                 setSearchText={setSearchTextMovie}
                 foundedMovies={foundedMovies}
@@ -388,9 +434,10 @@ function App() {
               <ProtectedRouteElement
                 element={SavedMovies}
                 loggedIn={loggedIn}
+                errorSearch={errorSearch}
                 path='/saved-movies'
+                error={error}
                 inSearch={inSearch}
-                showNoResults={handleNoResults}
                 searchMovie={searchSaveMovie}
                 changeCheckbox={handleChangeSaveCheckbox}
                 setPreload={setPreload}

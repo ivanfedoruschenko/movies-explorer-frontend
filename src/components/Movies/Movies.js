@@ -1,6 +1,5 @@
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import { mainApi } from '../../utils/MainApi';
 
 export default function Movies(props) {
   return (
@@ -14,6 +13,8 @@ export default function Movies(props) {
         shortMovie={props.shortMovie}
         movies={props.foundedMovies}
         searchText={props.searchText}
+        error={props.error}
+        errorSearch={props.errorSearch}
         setSearchText={props.setSearchText}
       />
       <MoviesCardList

@@ -13,7 +13,7 @@ export default function AuthWindow(props) {
         <button
           type='submit'
           className='button-opacity auth__button'
-          disabled={props.error}
+          disabled={!props.error}
         >
           {props.button}
         </button>

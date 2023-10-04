@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useForm } from '../../hooks/useForm';
 
 export default function SearchForm(props) {
   function handleChangeValue(e) {
@@ -10,21 +11,25 @@ export default function SearchForm(props) {
     e.preventDefault();
     props.setPreload();
     props.searchMovie(props.searchText);
-    props.showNoResults();
   }
 
   return (
-    <form className='search-form' onSubmit={handleSubmit}>
+    <form className='search-form' onSubmit={handleSubmit} noValidate>
       <div className='search-form__container'>
         <div className='search-form__icon'></div>
         <input
           onChange={handleChangeValue}
           className='search-form__input'
           type='text'
+          name='search'
           value={props.searchText || ''}
           placeholder='Фильм'
+          minLength='1'
           required
         />
+        {props.error && (
+          <span className='auth__error'>{props.errorSearch}</span>
+        )}
         <button type='submit' className='button-opacity search-form__button'>
           Найти
         </button>
