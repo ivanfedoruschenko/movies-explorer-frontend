@@ -21,9 +21,13 @@ export default function SavedMovies(props) {
         saveMovie={props.saveMovie}
         noResult={props.noResult}
         inSearch={props.inSearch}
-        foundedMovies={props.foundedMovies.filter(
-          (movie) => !props.checkboxChecked || movie.duration <= 40
-        )}
+        foundedMovies={
+          props.foundedMovies
+            ? props.foundedMovies.filter(
+                (movie) => !props.checkboxChecked || movie.duration <= 40
+              )
+            : []
+        }
         savedMovies={props.savedMovies}
         isLiked={props.isLiked}
         deleteMovie={props.deleteMovie}
