@@ -1,5 +1,6 @@
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import { logDOM } from '@testing-library/react';
 
 export default function Movies(props) {
   return (
@@ -21,7 +22,9 @@ export default function Movies(props) {
         saveMovie={props.saveMovie}
         noResult={props.noResult}
         inSearch={props.inSearch}
-        foundedMovies={props.foundedMovies}
+        foundedMovies={props.foundedMovies.filter(
+          (movie) => !props.checkboxChecked || movie.duration <= 40
+        )}
         movies={props.movies}
         savedMovies={props.savedMovies}
         isLiked={props.isLiked}

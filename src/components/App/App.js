@@ -20,9 +20,7 @@ function App() {
   const [foundedMovies, setFoundedMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [checkboxAllChecked, setCheckboxAllChecked] = React.useState(false);
-  const [loggedIn, setLoggedIn] = React.useState(
-    localStorage.getItem('isLogin') || { isLoggedIn: false }
-  );
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [error, setError] = React.useState(true);
   const [errorTextRegister, setErrorTextRegister] = React.useState('');
@@ -63,43 +61,47 @@ function App() {
 
   function searchSaveMovie(value) {
     localStorage.setItem('searchSaveMovieValue', value);
-    if (value == null) {
+    if (value.length === 0) {
       setError(true);
       setErrorSearch('Нужно ввести ключевое слово');
     } else {
       setError(false);
-    }
-    if (checkboxSaveChecked) {
-      const findShortMovies = savedMovies.filter((searchMovie) => {
-        return (
-          searchMovie.duration <= 40 &&
-          (searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
-            searchMovie.nameEN.toLowerCase().includes(value.toLowerCase()))
-        );
-      });
-      localStorage.setItem('searchSaveMovies', JSON.stringify(findShortMovies));
-      setSavedMovies(
-        JSON.parse(localStorage.getItem('searchSaveMovies')) || []
-      );
-    } else {
-      const foundMovies = savedMovies.filter((searchMovie) => {
-        return (
-          searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
-          searchMovie.nameEN.toLowerCase().includes(value.toLowerCase())
-        );
-      });
-      localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
-      setSavedMovies(
-        JSON.parse(localStorage.getItem('searchSaveMovies')) || []
-      );
-    }
-    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-    setMovies(JSON.parse(localStorage.getItem('movies')) || []);
 
-    if (savedMovies.length === 0) {
-      setNoResult(true);
+      if (checkboxSaveChecked) {
+        const findShortMovies = savedMovies.filter((searchMovie) => {
+          return (
+            searchMovie.duration <= 40 &&
+            (searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
+              searchMovie.nameEN.toLowerCase().includes(value.toLowerCase()))
+          );
+        });
+        localStorage.setItem(
+          'searchSaveMovies',
+          JSON.stringify(findShortMovies)
+        );
+        setSavedMovies(
+          JSON.parse(localStorage.getItem('searchSaveMovies')) || []
+        );
+      } else {
+        const foundMovies = savedMovies.filter((searchMovie) => {
+          return (
+            searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
+            searchMovie.nameEN.toLowerCase().includes(value.toLowerCase())
+          );
+        });
+        localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
+        setSavedMovies(
+          JSON.parse(localStorage.getItem('searchSaveMovies')) || []
+        );
+      }
+      localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+      setMovies(JSON.parse(localStorage.getItem('movies')) || []);
+
+      if (savedMovies.length === 0) {
+        setNoResult(true);
+      }
+      setNoResult(false);
     }
-    setNoResult(false);
   }
 
   function searchMovie(value) {
@@ -115,7 +117,6 @@ function App() {
     moviesApi
       .getMovies()
       .then((res) => {
-        console.log(value);
         if (value === '') {
           setError(true);
           setErrorSearch('Нужно ввести ключевое слово');
@@ -133,17 +134,13 @@ function App() {
             'searchAllMovies',
             JSON.stringify(findShortMovies)
           );
-          setFoundedMovies(
-            [...JSON.parse(localStorage.getItem('searchAllMovies'))] || []
-          );
+          setFoundedMovies(findShortMovies);
         } else {
           const foundMovies = res.filter((movie) => {
             return movie.nameRU.toLowerCase().includes(value.toLowerCase());
           });
           localStorage.setItem('searchAllMovies', JSON.stringify(foundMovies));
-          setFoundedMovies(
-            [...JSON.parse(localStorage.getItem('searchAllMovies'))] || []
-          );
+          setFoundedMovies(foundMovies);
         }
         if (foundedMovies.length === 0) {
           setNoResult(true);
@@ -185,6 +182,7 @@ function App() {
             name: response.name,
             email: response.email,
           });
+          handleLoginUser({ email, password });
           navigate('/movies', { replace: true });
           setError(false);
         }
@@ -246,18 +244,16 @@ function App() {
       })
       .catch((err) => console.log(`Ошибка: ${err}`));
   }
-
   function deleteMovie(movie) {
-    const deletedMovie = savedMovies.find(
-      (film) => film.movieId === movie.movieId
-    );
+    const deletedMovie = movie.movieId
+      ? savedMovies.find((film) => film.movieId === movie.movieId)
+      : savedMovies.find((film) => film.id === movie.movieId);
 
     mainApi
       .deleteMovie(deletedMovie._id)
       .then((movie) => {
         const newMovies = JSON.parse(localStorage.getItem('savedMovies'));
         const newSavedMovies = newMovies.filter((c) => c._id !== movie._id);
-        console.log(newSavedMovies);
         localStorage.setItem('savedMovies', JSON.stringify(newMovies));
         if (isLiked) {
           setSavedMovies(newSavedMovies);
@@ -324,27 +320,7 @@ function App() {
       JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
     );
     setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')) || []);
-    mainApi
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
-  }, []);
 
-  React.useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getUserInfo()
-        .then((user) => {
-          setCurrentUser(user);
-          setLoggedIn(true);
-        })
-        .catch((err) => console.log(`Ошибка: ${err}`));
-    }
-  }, []);
-
-  React.useEffect(() => {
     mainApi
       .getSavedMovies()
       .then((res) => {
@@ -358,6 +334,22 @@ function App() {
         setSavedMovies(res);
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
+  }, []);
+
+  React.useEffect(() => {
+    setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')));
+  }, [checkboxAllChecked]);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getUserInfo()
+        .then((user) => {
+          setCurrentUser(user);
+          setLoggedIn(true);
+        })
+        .catch((err) => console.log(`Ошибка: ${err}`));
+    }
   }, []);
 
   return (
@@ -414,10 +406,11 @@ function App() {
                 inSearch={inSearch}
                 searchMovie={searchMovie}
                 errorSearch={errorSearch}
+                checkboxChecked={checkboxAllChecked}
                 changeCheckbox={handleChangeAllCheckbox}
                 setPreload={setPreload}
-                movies={movies}
                 error={error}
+                noResult={noResult}
                 searchText={searchTextMovie}
                 setSearchText={setSearchTextMovie}
                 foundedMovies={foundedMovies}

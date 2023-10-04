@@ -9,8 +9,10 @@ export default function SearchForm(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.setPreload();
-    props.searchMovie(props.searchText);
+    if (props.searchMovie(props.searchText)) {
+      props.setPreload();
+      props.searchMovie(props.searchText);
+    }
   }
 
   return (

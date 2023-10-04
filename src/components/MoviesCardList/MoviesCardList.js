@@ -30,6 +30,7 @@ export default function MoviesCardList({
   isLiked,
   inSearch,
   foundedMovies,
+  noResult,
 }) {
   const [showMovies, setShowMovies] = useState(
     foundedMovies.slice(0, movieStep())
@@ -41,11 +42,17 @@ export default function MoviesCardList({
     setNextStep(nextStep + movieNextStep());
   }
 
+  useEffect(() => {
+    setShowMovies(foundedMovies.slice(0, movieStep()));
+  }, [foundedMovies]);
+
   return (
     <section className='movies-list'>
       {inSearch ? (
         <Preloader />
-      ) : foundedMovies.length ? (
+      ) : noResult ? (
+        <p className='movies-list__no-find'>Ничего не найдено</p>
+      ) : (
         <ul className='movies-list__container'>
           {showMovies.map((movie) => {
             return (
@@ -60,10 +67,8 @@ export default function MoviesCardList({
             );
           })}
         </ul>
-      ) : (
-        <p className='movies-list__no-find'>Ничего не найдено</p>
       )}
-      {foundedMovies.length > nextStep && (
+      {foundedMovies.length >= movieStep() && (
         <button
           type='button'
           onClick={showMore}
