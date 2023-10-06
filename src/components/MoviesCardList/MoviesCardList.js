@@ -44,7 +44,7 @@ export default function MoviesCardList({
 
   useEffect(() => {
     setShowMovies(foundedMovies.slice(0, movieStep()));
-  }, [foundedMovies]);
+  }, [foundedMovies.length]);
 
   return (
     <section className='movies-list'>

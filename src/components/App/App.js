@@ -222,6 +222,7 @@ function App() {
   };
 
   function saveMovie(data) {
+    console.log(data)
     mainApi
       .saveMovies({
         country: data.country,
@@ -251,7 +252,6 @@ function App() {
     const deletedMovie = movie.movieId
       ? savedMovies.find((film) => film.movieId === movie.movieId)
       : savedMovies.find((film) => film.id === movie.movieId);
-
     mainApi
       .deleteMovie(deletedMovie._id)
       .then((movie) => {
@@ -274,10 +274,12 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
-          setLoggedIn(true);
           navigate('/movies', { replace: true });
           setError(false);
         }
+      })
+      .then((res)=>{
+        setLoggedIn(true);
       })
       .catch((error) => {
         setErrorTextLogin('');
@@ -295,7 +297,6 @@ function App() {
           if (res) {
             setLoggedIn(true);
             setCurrentUser(res);
-            console.log(res);
             navigate('/movies', { replace: true });
           }
         })
@@ -304,50 +305,50 @@ function App() {
   };
 
   React.useEffect(() => {
-    localStorage.setItem('isLogin', JSON.stringify(setLoggedIn));
+    if (loggedIn){
+      tokenCheck();
+      localStorage.setItem('isLogin', JSON.stringify(setLoggedIn));
+      setSearchTextSavedMovie(
+        JSON.parse(localStorage.getItem('savedMovieSearchValue'))
+      );
+      setSearchTextMovie(
+        JSON.parse(localStorage.getItem('allMovieSearchValue')) || ''
+      );
+      setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')) || []);
+      setCheckboxAllChecked(
+        JSON.parse(localStorage.getItem('checkboxAllShort')) || false
+      );
+      setCheckboxSaveChecked(
+        JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
+      );
+      setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')) || []);
+      mainApi
+        .getSavedMovies()
+        .then((res) => {
+          const savedMovie = res.every((movie) => {
+            return movie.owner;
+          });
+          if (savedMovie) {
+            setIsLiked(true);
+          }
+          localStorage.setItem('savedMovies', JSON.stringify(res));
+          setSavedMovies(res);
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`));
+
+      mainApi
+        .getUserInfo()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch((err) => console.log(`Ошибка: ${err}`));
+    }
+
   }, [loggedIn]);
 
-  React.useEffect(() => {
-    tokenCheck();
-    setSearchTextSavedMovie(
-      JSON.parse(localStorage.getItem('savedMovieSearchValue'))
-    );
-    setSearchTextMovie(
-      JSON.parse(localStorage.getItem('allMovieSearchValue')) || ''
-    );
-    setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')) || []);
-    setCheckboxAllChecked(
-      JSON.parse(localStorage.getItem('checkboxAllShort')) || false
-    );
-    setCheckboxSaveChecked(
-      JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
-    );
-    setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')) || []);
-    mainApi
-      .getSavedMovies()
-      .then((res) => {
-        const savedMovie = res.every((movie) => {
-          return movie.owner;
-        });
-        if (savedMovie) {
-          setIsLiked(true);
-        }
-        localStorage.setItem('savedMovies', JSON.stringify(res));
-        setSavedMovies(res);
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
-
-    mainApi
-      .getUserInfo()
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
-  }, []);
-  React.useEffect(() => {
-    tokenCheck();
-    console.log(1);
-  }, [localStorage.token]);
+  React.useEffect(() =>{
+    tokenCheck()
+  }, [])
 
   React.useEffect(() => {
     setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')));

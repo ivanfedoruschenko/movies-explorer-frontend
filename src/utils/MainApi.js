@@ -66,10 +66,13 @@ class MainApi {
     }).then((res) => this._getResponseData(res));
   }
 
-  authorize(token) {
+  authorize(token ) {
     return fetch(`${this._address}/users/me`, {
       method: 'GET',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     }).then((res) => {
       return this._getResponseData(res);
     });

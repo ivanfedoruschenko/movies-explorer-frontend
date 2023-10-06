@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import iconCross from '../../images/navigation__icon-cross.svg';
 
 export default function Navigation() {

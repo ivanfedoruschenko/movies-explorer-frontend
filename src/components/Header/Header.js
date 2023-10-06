@@ -25,7 +25,7 @@ export default function Header(props) {
         <Link to='/'>
           <div className='logo button-opacity' />
         </Link>
-        {props.loggedIn ? <Navigation /> : menuUnLogin}
+        {props.loggedIn ? <Navigation/> : menuUnLogin}
       </div>
     </header>
   );
