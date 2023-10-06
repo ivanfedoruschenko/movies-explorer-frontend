@@ -18,7 +18,7 @@ export default function Profile(props) {
       name: currentUser.name,
       email: currentUser.email,
     });
-  }, [setValues, currentUser.name, currentUser.email]);
+  }, [setValues]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

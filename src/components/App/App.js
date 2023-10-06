@@ -1,5 +1,5 @@
 import './app.css';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Main from '../Main/Main';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -37,7 +37,6 @@ function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
   const pathHeaderGreen = location.pathname === '/';
   const pathHeader =
     location.pathname === '/' ||
@@ -56,6 +55,11 @@ function App() {
   function signOut() {
     localStorage.clear();
     setLoggedIn(false);
+    setCurrentUser({
+      name: '',
+      email: '',
+      _id: '',
+    });
     navigate('/', { replace: true });
   }
 
@@ -66,7 +70,6 @@ function App() {
       setErrorSearch('Нужно ввести ключевое слово');
     } else {
       setError(false);
-
       if (checkboxSaveChecked) {
         const findShortMovies = savedMovies.filter((searchMovie) => {
           return (
@@ -282,7 +285,6 @@ function App() {
         setErrorTextLogin('Неверный логин или пароль');
       });
   };
-
   const tokenCheck = () => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -291,8 +293,9 @@ function App() {
         .authorize(token)
         .then((res) => {
           if (res) {
-            setCurrentUser(res);
             setLoggedIn(true);
+            setCurrentUser(res);
+            console.log(res);
             navigate('/movies', { replace: true });
           }
         })
@@ -302,7 +305,7 @@ function App() {
 
   React.useEffect(() => {
     localStorage.setItem('isLogin', JSON.stringify(setLoggedIn));
-  }, [setLoggedIn]);
+  }, [loggedIn]);
 
   React.useEffect(() => {
     tokenCheck();
@@ -320,7 +323,6 @@ function App() {
       JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
     );
     setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')) || []);
-
     mainApi
       .getSavedMovies()
       .then((res) => {
@@ -334,23 +336,22 @@ function App() {
         setSavedMovies(res);
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
+
+    mainApi
+      .getUserInfo()
+      .then((user) => {
+        setCurrentUser(user);
+      })
+      .catch((err) => console.log(`Ошибка: ${err}`));
   }, []);
+  React.useEffect(() => {
+    tokenCheck();
+    console.log(1);
+  }, [localStorage.token]);
 
   React.useEffect(() => {
     setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')));
   }, [checkboxAllChecked]);
-
-  React.useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getUserInfo()
-        .then((user) => {
-          setCurrentUser(user);
-          setLoggedIn(true);
-        })
-        .catch((err) => console.log(`Ошибка: ${err}`));
-    }
-  }, []);
 
   return (
     <div className='app'>
