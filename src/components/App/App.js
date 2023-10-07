@@ -179,7 +179,7 @@ function App() {
 
   const handleUpdateUser = (data) => {
     mainApi
-      .patchUserInfo(data)
+      .patchUserInfo(data, localStorage.token)
       .then((res) => {
         setCurrentUser({
           name: res.name,
@@ -196,20 +196,23 @@ function App() {
 
   function saveMovie(data) {
     mainApi
-      .saveMovies({
-        country: data.country,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        description: data.description,
-        image: 'https://api.nomoreparties.co' + data.image.url,
-        trailer: data.trailerLink,
-        thumbnail:
-          'https://api.nomoreparties.co' + data.image.formats.thumbnail.url,
-        movieId: data.duration,
-        nameRU: data.nameRU,
-        nameEN: data.nameEN,
-      })
+      .saveMovies(
+        {
+          country: data.country,
+          director: data.director,
+          duration: data.duration,
+          year: data.year,
+          description: data.description,
+          image: 'https://api.nomoreparties.co' + data.image.url,
+          trailer: data.trailerLink,
+          thumbnail:
+            'https://api.nomoreparties.co' + data.image.formats.thumbnail.url,
+          movieId: data.duration,
+          nameRU: data.nameRU,
+          nameEN: data.nameEN,
+        },
+        localStorage.token
+      )
       .then((film) => {
         const moviesSaved = JSON.parse(
           localStorage.getItem('savedMovies') || []
@@ -228,7 +231,7 @@ function App() {
       ? savedMovies.find((film) => film.movieId === movie.movieId)
       : savedMovies.find((film) => film.id === movie.movieId);
     mainApi
-      .deleteMovie(deletedMovie._id)
+      .deleteMovie(deletedMovie._id, localStorage.token)
       .then((movie) => {
         const newMovies = JSON.parse(localStorage.getItem('savedMovies'));
         const newSavedMovies = newMovies.filter((c) => c._id !== movie._id);
@@ -296,8 +299,6 @@ function App() {
       localStorage.clear();
     }
   }, [loggedIn]);
-
-  React.useEffect(() => {}, []);
 
   React.useEffect(() => {
     setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')));

@@ -1,7 +1,6 @@
 class MainApi {
   constructor(setting) {
     this._address = setting.baseUrl;
-    this._headers = setting.headers;
   }
 
   _getResponseData(res) {
@@ -11,49 +10,64 @@ class MainApi {
     return res.json();
   }
 
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this._address}/users/me`, {
       method: 'GET',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     }).then((res) => {
       return this._getResponseData(res);
     });
   }
 
-  getSavedMovies() {
+  getSavedMovies(token) {
     return fetch(`${this._address}/movies `, {
       method: 'GET',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     }).then((res) => this._getResponseData(res));
   }
 
-  patchUserInfo(data) {
+  patchUserInfo(data, token) {
     return fetch(`${this._address}/users/me`, {
       method: 'PATCH',
       body: JSON.stringify({ name: data.name, email: data.email }),
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     }).then((res) => this._getResponseData(res));
   }
 
-  saveMovies(movie) {
+  saveMovies(movie, token) {
     return fetch(`${this._address}/movies`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(movie),
     }).then((res) => this._getResponseData(res));
   }
 
-  deleteMovie(movie) {
+  deleteMovie(movie, token) {
     return fetch(`${this._address}/movies/${movie} `, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     }).then((res) => this._getResponseData(res));
   }
 
   register(name, email, password) {
     return fetch(`${this._address}/signup`, {
       method: 'POST',
-      headers: this._headers,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
     }).then((res) => this._getResponseData(res));
   }
@@ -61,12 +75,12 @@ class MainApi {
   login(email, password) {
     return fetch(`${this._address}/signin`, {
       method: 'POST',
-      headers: this._headers,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     }).then((res) => this._getResponseData(res));
   }
 
-  authorize(token ) {
+  authorize(token) {
     return fetch(`${this._address}/users/me`, {
       method: 'GET',
       headers: {
@@ -81,8 +95,4 @@ class MainApi {
 
 export const mainApi = new MainApi({
   baseUrl: 'https://api.movies-explorer.spb.nomoreparties.co',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-    'Content-Type': 'application/json',
-  },
 });
