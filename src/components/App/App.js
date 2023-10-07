@@ -70,41 +70,24 @@ function App() {
       setErrorSearch('Нужно ввести ключевое слово');
     } else {
       setError(false);
-      if (checkboxSaveChecked) {
-        const findShortMovies = savedMovies.filter((searchMovie) => {
-          return (
-            searchMovie.duration <= 40 &&
-            (searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
-              searchMovie.nameEN.toLowerCase().includes(value.toLowerCase()))
-          );
-        });
-        localStorage.setItem(
-          'searchSaveMovies',
-          JSON.stringify(findShortMovies)
+      const foundMovies = savedMovies.filter((searchMovie) => {
+        return (
+          searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
+          searchMovie.nameEN.toLowerCase().includes(value.toLowerCase())
         );
-        setSavedMovies(
-          JSON.parse(localStorage.getItem('searchSaveMovies')) || []
-        );
-      } else {
-        const foundMovies = savedMovies.filter((searchMovie) => {
-          return (
-            searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
-            searchMovie.nameEN.toLowerCase().includes(value.toLowerCase())
-          );
-        });
-        localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
-        setSavedMovies(
-          JSON.parse(localStorage.getItem('searchSaveMovies')) || []
-        );
-      }
-      localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-      setMovies(JSON.parse(localStorage.getItem('movies')) || []);
-
-      if (savedMovies.length === 0) {
-        setNoResult(true);
-      }
-      setNoResult(false);
+      });
+      localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
+      setSavedMovies(
+        JSON.parse(localStorage.getItem('searchSaveMovies')) || []
+      );
     }
+    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+    setMovies(JSON.parse(localStorage.getItem('movies')) || []);
+
+    if (savedMovies.length === 0) {
+      setNoResult(true);
+    }
+    setNoResult(false);
   }
 
   function searchMovie(value) {
@@ -124,34 +107,24 @@ function App() {
           setError(true);
           setErrorSearch('Нужно ввести ключевое слово');
         } else {
-          setError(false);
-        }
-        if (checkboxAllChecked) {
-          const findShortMovies = res.filter((movie) => {
-            return (
-              movie.duration <= 40 &&
-              movie.nameRU.toLowerCase().includes(value.toLowerCase())
+          if (res.length === 0) {
+            setNoResult(true);
+          } else {
+            setNoResult(false);
+            setError(false);
+            const foundMovies = res.filter((movie) => {
+              return movie.nameRU.toLowerCase().includes(value.toLowerCase());
+            });
+            localStorage.setItem(
+              'searchAllMovies',
+              JSON.stringify(foundMovies)
             );
-          });
-          localStorage.setItem(
-            'searchAllMovies',
-            JSON.stringify(findShortMovies)
-          );
-          setFoundedMovies(findShortMovies);
-        } else {
-          const foundMovies = res.filter((movie) => {
-            return movie.nameRU.toLowerCase().includes(value.toLowerCase());
-          });
-          localStorage.setItem('searchAllMovies', JSON.stringify(foundMovies));
-          setFoundedMovies(foundMovies);
+            setFoundedMovies(foundMovies);
+
+            localStorage.setItem('movies', JSON.stringify(res));
+            setMovies(JSON.parse(localStorage.getItem('movies')) || []);
+          }
         }
-        if (foundedMovies.length === 0) {
-          setNoResult(true);
-        } else {
-          setNoResult(false);
-        }
-        localStorage.setItem('movies', JSON.stringify(res));
-        setMovies(JSON.parse(localStorage.getItem('movies')) || []);
       })
       .catch((error) => {
         console.log(`Ошибка: ${error}`);
@@ -222,7 +195,6 @@ function App() {
   };
 
   function saveMovie(data) {
-    console.log(data)
     mainApi
       .saveMovies({
         country: data.country,
@@ -234,15 +206,18 @@ function App() {
         trailer: data.trailerLink,
         thumbnail:
           'https://api.nomoreparties.co' + data.image.formats.thumbnail.url,
-        movieId: data.id,
+        movieId: data.duration,
         nameRU: data.nameRU,
         nameEN: data.nameEN,
       })
       .then((film) => {
-        setSavedMovies([film, ...savedMovies]);
+        const moviesSaved = JSON.parse(
+          localStorage.getItem('savedMovies') || []
+        );
+        setSavedMovies([film, ...moviesSaved]);
         localStorage.setItem(
           'savedMovies',
-          JSON.stringify([film, ...savedMovies])
+          JSON.stringify([film, ...moviesSaved])
         );
         setIsLiked(true);
       })
@@ -257,7 +232,7 @@ function App() {
       .then((movie) => {
         const newMovies = JSON.parse(localStorage.getItem('savedMovies'));
         const newSavedMovies = newMovies.filter((c) => c._id !== movie._id);
-        localStorage.setItem('savedMovies', JSON.stringify(newMovies));
+        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
         if (isLiked) {
           setSavedMovies(newSavedMovies);
         } else {
@@ -274,12 +249,12 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
-          navigate('/movies', { replace: true });
           setError(false);
         }
       })
-      .then((res)=>{
+      .then((res) => {
         setLoggedIn(true);
+        navigate('/movies', { replace: true });
       })
       .catch((error) => {
         setErrorTextLogin('');
@@ -287,68 +262,42 @@ function App() {
         setErrorTextLogin('Неверный логин или пароль');
       });
   };
-  const tokenCheck = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // проверим токен
-      mainApi
-        .authorize(token)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            setCurrentUser(res);
-            navigate('/movies', { replace: true });
-          }
-        })
-        .catch((error) => console.log(`Ошибка: ${error}`));
-    }
-  };
 
   React.useEffect(() => {
-    if (loggedIn){
-      tokenCheck();
-      localStorage.setItem('isLogin', JSON.stringify(setLoggedIn));
-      setSearchTextSavedMovie(
-        JSON.parse(localStorage.getItem('savedMovieSearchValue'))
-      );
-      setSearchTextMovie(
-        JSON.parse(localStorage.getItem('allMovieSearchValue')) || ''
-      );
-      setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')) || []);
-      setCheckboxAllChecked(
-        JSON.parse(localStorage.getItem('checkboxAllShort')) || false
-      );
-      setCheckboxSaveChecked(
-        JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
-      );
-      setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')) || []);
-      mainApi
-        .getSavedMovies()
-        .then((res) => {
-          const savedMovie = res.every((movie) => {
-            return movie.owner;
-          });
-          if (savedMovie) {
-            setIsLiked(true);
-          }
-          localStorage.setItem('savedMovies', JSON.stringify(res));
-          setSavedMovies(res);
-        })
-        .catch((error) => console.log(`Ошибка: ${error}`));
-
-      mainApi
-        .getUserInfo()
-        .then((user) => {
+    if (localStorage.token) {
+      Promise.all([
+        mainApi.getUserInfo(localStorage.token),
+        mainApi.getSavedMovies(localStorage.token),
+      ])
+        .then(([user, movies]) => {
+          setSavedMovies(movies);
           setCurrentUser(user);
+          setLoggedIn(true);
+          setSearchTextSavedMovie(
+            JSON.parse(localStorage.getItem('savedMovieSearchValue'))
+          );
+          setSearchTextMovie(
+            JSON.parse(localStorage.getItem('allMovieSearchValue')) || ''
+          );
+          setCheckboxAllChecked(
+            JSON.parse(localStorage.getItem('checkboxAllShort')) || false
+          );
+          setCheckboxSaveChecked(
+            JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
+          );
+          localStorage.setItem('savedMovies', JSON.stringify(movies));
+          navigate('/movies', { replace: true });
         })
-        .catch((err) => console.log(`Ошибка: ${err}`));
+        .catch((err) => {
+          console.error(`Произошла ошибка ${err}`);
+        });
+    } else {
+      setLoggedIn(false);
+      localStorage.clear();
     }
-
   }, [loggedIn]);
 
-  React.useEffect(() =>{
-    tokenCheck()
-  }, [])
+  React.useEffect(() => {}, []);
 
   React.useEffect(() => {
     setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')));

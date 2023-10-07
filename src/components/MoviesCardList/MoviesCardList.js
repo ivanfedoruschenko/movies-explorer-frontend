@@ -31,6 +31,7 @@ export default function MoviesCardList({
   inSearch,
   foundedMovies,
   noResult,
+  loggedIn,
 }) {
   const [showMovies, setShowMovies] = useState(
     foundedMovies.slice(0, movieStep())
@@ -44,7 +45,7 @@ export default function MoviesCardList({
 
   useEffect(() => {
     setShowMovies(foundedMovies.slice(0, movieStep()));
-  }, [foundedMovies.length]);
+  }, [foundedMovies]);
 
   return (
     <section className='movies-list'>
@@ -58,6 +59,7 @@ export default function MoviesCardList({
             return (
               <MovieCard
                 key={movie.id ?? movie.movieId}
+                loggedIn={loggedIn}
                 saveMovie={saveMovie}
                 movie={movie}
                 deleteMovie={deleteMovie}

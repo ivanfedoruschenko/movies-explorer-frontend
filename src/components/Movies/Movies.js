@@ -22,6 +22,7 @@ export default function Movies(props) {
         saveMovie={props.saveMovie}
         noResult={props.noResult}
         inSearch={props.inSearch}
+        loggedIn={props.loggedIn}
         foundedMovies={
           props.foundedMovies
             ? props.foundedMovies.filter(

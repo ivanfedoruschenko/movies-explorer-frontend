@@ -10,6 +10,7 @@ export default function MovieCard({
   deleteMovie,
   isLiked,
   savedMovies,
+  loggedIn,
 }) {
   const [liked, setLiked] = useState(isLiked);
 
@@ -36,9 +37,11 @@ export default function MovieCard({
   }`;
 
   useEffect(() => {
-    if (location === '/movies') {
-      savedMovies.forEach((savedFilm) => {
-        if (savedFilm.movieId === movie.id) {
+    const moviesSaved = JSON.parse(localStorage.getItem('savedMovies'));
+    if (moviesSaved) {
+      moviesSaved.forEach((savedFilm) => {
+        console.log(savedFilm);
+        if (savedFilm.movieId === movie.duration) {
           setLiked(true);
         }
       });
