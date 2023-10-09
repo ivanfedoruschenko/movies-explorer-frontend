@@ -1,24 +1,31 @@
 import MovieCard from '../MovieCard/MovieCard';
 import Preloader from '../Preloader/Preloader';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const movieStep = () => {
-  if (window.screen.width <= 426) {
+  if (window.screen.width < 768) {
     return 5;
   }
-  if (window.screen.width <= 768) {
+  if (window.screen.width >= 768 && window.screen.width < 922) {
     return 8;
   }
-  if (window.screen.width > 768) {
+  if (window.screen.width >= 922 && window.screen.width <= 1237) {
+    return 12;
+  }
+  if (window.screen.width > 1237) {
     return 16;
   }
 };
 
 const movieNextStep = () => {
-  if (window.screen.width <= 768) {
+  if (window.screen.width < 922) {
     return 2;
   }
-  if (window.screen.width > 768) {
+  if (window.screen.width >= 922 && window.screen.width <= 1237) {
+    return 3;
+  }
+  if (window.screen.width >= 1237) {
     return 4;
   }
 };
@@ -70,7 +77,7 @@ export default function MoviesCardList({
           })}
         </ul>
       )}
-      {foundedMovies.length >= movieStep() && (
+      {foundedMovies.length > nextStep && !inSearch && !noResult && (
         <button
           type='button'
           onClick={showMore}

@@ -35,6 +35,7 @@ export default function Register(props) {
           minLength='2'
           maxLength='15'
           placeholder='Имя'
+          formNoValidate
           required
         />
       </label>
@@ -47,6 +48,7 @@ export default function Register(props) {
           name='email'
           onChange={handleChange}
           placeholder='Email'
+          formNoValidate
           required
         />
       </label>
@@ -54,7 +56,7 @@ export default function Register(props) {
         Пароль
         <input
           className={`input auth__input  ${
-            !isValid && 'auth__input_type_error'
+            props.error && 'auth__input_type_error'
           }`}
           type='password'
           value={values.password ? values.password : ''}
@@ -63,9 +65,10 @@ export default function Register(props) {
           minLength='8'
           maxLength='20'
           placeholder='Пароль'
+          formNoValidate
           required
         />
-        {!isValid && <span className='auth__error'>{props.errorText}</span>}
+        {props.error && <span className='auth__error'>{props.errorText}</span>}
       </label>
     </AuthWindow>
   );

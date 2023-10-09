@@ -20,6 +20,10 @@ export default function Profile(props) {
     });
   }, [setValues]);
 
+  const buttonIsValid =
+    isValid &&
+    (values.name !== currentUser.name || values.email !== currentUser.email);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -64,10 +68,15 @@ export default function Profile(props) {
           {props.isEdit ? (
             <div className='profile__btn-container'>
               {errors && <p className='profile__error'>{props.errorText}</p>}
+              {props.confirmation && (
+                <span className='profile__confirmation'>
+                  Данные успешно сохранены
+                </span>
+              )}
               <button
                 type='submit'
                 className='button-opacity profile__btn-save'
-                disabled={!isValid}
+                disabled={!buttonIsValid}
               >
                 Сохранить
               </button>

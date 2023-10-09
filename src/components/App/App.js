@@ -22,7 +22,7 @@ function App() {
   const [checkboxAllChecked, setCheckboxAllChecked] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [error, setError] = React.useState(true);
+  const [error, setError] = React.useState(false);
   const [errorTextRegister, setErrorTextRegister] = React.useState('');
   const [errorTextLogin, setErrorTextLogin] = React.useState('');
   const [errorTextUpdate, setErrorTextUpdate] = React.useState('');
@@ -34,6 +34,7 @@ function App() {
   const [searchTextMovie, setSearchTextMovie] = React.useState('');
   const [searchTextSavedMovie, setSearchTextSavedMovie] = React.useState('');
   const [errorSearch, setErrorSearch] = React.useState('');
+  const [confirmation, setConfirmation] = React.useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,32 +66,32 @@ function App() {
 
   function searchSaveMovie(value) {
     localStorage.setItem('searchSaveMovieValue', value);
+    setPreload();
     if (value.length === 0) {
       setError(true);
       setErrorSearch('Нужно ввести ключевое слово');
     } else {
-      setError(false);
-      const foundMovies = savedMovies.filter((searchMovie) => {
+      const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
+      const foundMovies = allSavedMovies.filter((searchMovie) => {
         return (
           searchMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
           searchMovie.nameEN.toLowerCase().includes(value.toLowerCase())
         );
       });
-      localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
-      setSavedMovies(
-        JSON.parse(localStorage.getItem('searchSaveMovies')) || []
-      );
+      if (foundMovies.length === 0) {
+        setNoResult(true);
+      } else {
+        setError(false);
+        setNoResult(false);
+        localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
+        setSavedMovies(foundMovies);
+      }
+      setMovies(JSON.parse(localStorage.getItem('movies')) || []);
     }
-    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-    setMovies(JSON.parse(localStorage.getItem('movies')) || []);
-
-    if (savedMovies.length === 0) {
-      setNoResult(true);
-    }
-    setNoResult(false);
   }
 
   function searchMovie(value) {
+    setPreload();
     localStorage.setItem('searchMovieValue', value);
     localStorage.setItem(
       'allMovieSearchValue',
@@ -107,14 +108,14 @@ function App() {
           setError(true);
           setErrorSearch('Нужно ввести ключевое слово');
         } else {
-          if (res.length === 0) {
+          const foundMovies = res.filter((movie) => {
+            return movie.nameRU.toLowerCase().includes(value.toLowerCase());
+          });
+          if (foundMovies.length === 0) {
             setNoResult(true);
           } else {
             setNoResult(false);
             setError(false);
-            const foundMovies = res.filter((movie) => {
-              return movie.nameRU.toLowerCase().includes(value.toLowerCase());
-            });
             localStorage.setItem(
               'searchAllMovies',
               JSON.stringify(foundMovies)
@@ -145,6 +146,14 @@ function App() {
     setInSearch(true);
     setTimeout(() => {
       setInSearch(false);
+    }, 1000);
+  }
+
+  function setConfirm() {
+    setConfirmation(true);
+    setTimeout(() => {
+      setConfirmation(false);
+      setEditProfile(false);
     }, 1000);
   }
 
@@ -185,7 +194,7 @@ function App() {
           name: res.name,
           email: res.email,
         });
-        setEditProfile(false);
+        setConfirm();
       })
       .catch((error) => {
         setErrorTextUpdate('');
@@ -207,7 +216,7 @@ function App() {
           trailer: data.trailerLink,
           thumbnail:
             'https://api.nomoreparties.co' + data.image.formats.thumbnail.url,
-          movieId: data.duration,
+          movieId: data.id,
           nameRU: data.nameRU,
           nameEN: data.nameEN,
         },
@@ -233,14 +242,15 @@ function App() {
     mainApi
       .deleteMovie(deletedMovie._id, localStorage.token)
       .then((movie) => {
-        const newMovies = JSON.parse(localStorage.getItem('savedMovies'));
-        const newSavedMovies = newMovies.filter((c) => c._id !== movie._id);
+        const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
+        const newSavedMovies = allSavedMovies.filter(
+          (c) => c._id !== movie._id
+        );
+        const newFilteredMovies = savedMovies.filter(
+          (c) => c._id !== movie._id
+        );
         localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
-        if (isLiked) {
-          setSavedMovies(newSavedMovies);
-        } else {
-          setIsLiked(false);
-        }
+        setSavedMovies(newFilteredMovies);
       })
       .catch((err) => console.log(`Ошибка: ${err}`));
   }
@@ -289,7 +299,6 @@ function App() {
             JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
           );
           localStorage.setItem('savedMovies', JSON.stringify(movies));
-          navigate('/movies', { replace: true });
         })
         .catch((err) => {
           console.error(`Произошла ошибка ${err}`);
@@ -345,6 +354,7 @@ function App() {
                 signOut={signOut}
                 setError={setError}
                 errorText={errorTextUpdate}
+                confirmation={confirmation}
                 path='/profile'
               />
             }
@@ -367,6 +377,7 @@ function App() {
                 setSearchText={setSearchTextMovie}
                 foundedMovies={foundedMovies}
                 saveMovie={saveMovie}
+                isLiked={isLiked}
                 savedMovies={savedMovies}
                 deleteMovie={deleteMovie}
                 path='/movies'
@@ -379,6 +390,7 @@ function App() {
               <ProtectedRouteElement
                 element={SavedMovies}
                 loggedIn={loggedIn}
+                noResult={noResult}
                 errorSearch={errorSearch}
                 path='/saved-movies'
                 error={error}
@@ -391,8 +403,8 @@ function App() {
                 checkboxChecked={checkboxSaveChecked}
                 searchText={searchTextSavedMovie}
                 setSearchText={setSearchTextSavedMovie}
-                foundedMovies={savedMovies}
                 savedMovies={savedMovies}
+                foundedMovies={savedMovies}
                 deleteMovie={deleteMovie}
               />
             }

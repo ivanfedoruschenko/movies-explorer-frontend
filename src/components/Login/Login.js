@@ -34,6 +34,7 @@ export default function Login(props) {
           name='email'
           onChange={handleChange}
           placeholder='email'
+          formNoValidate
           required
         />
       </label>
@@ -41,7 +42,7 @@ export default function Login(props) {
         Пароль
         <input
           className={`input auth__input  ${
-            !isValid && 'auth__input_type_error'
+            props.error && 'auth__input_type_error'
           }`}
           type='password'
           value={values.password ? values.password : ''}
@@ -50,9 +51,10 @@ export default function Login(props) {
           minLength='8'
           maxLength='20'
           onChange={handleChange}
+          formNoValidate
           required
         />
-        {!isValid && <span className='auth__error'>{props.errorText}</span>}
+        {props.error && <span className='auth__error'>{props.errorText}</span>}
       </label>
     </AuthWindow>
   );

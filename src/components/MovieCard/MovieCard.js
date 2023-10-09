@@ -33,20 +33,23 @@ export default function MovieCard({
   }
 
   const likeClassname = `button-opacity movie-card__like ${
-    liked ? 'movie-card__like_type_active' : 'movie-card__like_type_disable'
+    liked
+      ? `${
+          location === '/movies'
+            ? 'movie-card__like_type_active-allMovies'
+            : 'movie-card__like_type_active-savedMovies'
+        }`
+      : 'movie-card__like_type_disable'
   }`;
 
   useEffect(() => {
-    const moviesSaved = JSON.parse(localStorage.getItem('savedMovies'));
-    if (moviesSaved) {
-      moviesSaved.forEach((savedFilm) => {
-        console.log(savedFilm);
-        if (savedFilm.movieId === movie.duration) {
-          setLiked(true);
-        }
-      });
-    }
-  }, [setLiked]);
+    const moviesSave = JSON.parse(localStorage.getItem('savedMovies') || '[]');
+    moviesSave.forEach((savedFilm) => {
+      if (savedFilm.movieId === movie.id) {
+        setLiked(true);
+      }
+    });
+  }, [loggedIn]);
 
   return (
     <div className='movie-card'>

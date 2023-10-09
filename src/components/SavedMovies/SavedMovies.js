@@ -29,7 +29,7 @@ export default function SavedMovies(props) {
             : []
         }
         savedMovies={props.savedMovies}
-        isLiked={props.isLiked}
+        isLiked={true}
         deleteMovie={props.deleteMovie}
       />
     </main>

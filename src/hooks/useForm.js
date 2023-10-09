@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 
 const regexName = /^[a-zA-Zа-яА-Я\sё-]+$/;
-const regexEmail = /[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+/;
+const regexEmail =
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
 
 export function useForm() {
   const [values, setValues] = React.useState({});
@@ -24,7 +25,11 @@ export function useForm() {
         : event.target.validationMessage;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: error });
-    setIsValid(isNameValidation && target.closest('form').checkValidity());
+    setIsValid(
+      isNameValidation &&
+        isEmailValidation &&
+        target.closest('form').checkValidity()
+    );
   };
 
   const resetForm = useCallback(
