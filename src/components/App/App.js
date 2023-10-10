@@ -37,7 +37,7 @@ function App() {
   const [errorSearch, setErrorSearch] = React.useState('');
   const [confirmation, setConfirmation] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(
-    JSON.parse(localStorage.getItem('login')) || false
+    JSON.parse(localStorage.getItem('login'))
   );
 
   const location = useLocation();
@@ -267,6 +267,7 @@ function App() {
       .then((res) => {
         setLoggedIn(true);
         localStorage.setItem('login', JSON.stringify(loggedIn));
+        setIsLogin(true);
         navigate('/movies', { replace: true });
       })
       .catch((error) => {
@@ -303,6 +304,10 @@ function App() {
       localStorage.clear();
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    localStorage.setItem('stateIsLogin', JSON.stringify(isLogin));
+  }, [isLogin]);
 
   React.useEffect(() => {
     setFoundedMovies(JSON.parse(localStorage.getItem('searchAllMovies')));
