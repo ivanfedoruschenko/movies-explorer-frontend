@@ -1,32 +1,52 @@
 import MovieCard from '../MovieCard/MovieCard';
 import Preloader from '../Preloader/Preloader';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import {
+  SCREEN_MOBILE,
+  SCREEN_LAPTOP,
+  SCREEN_DESKTOP,
+  STEP_MOBILE,
+  STEP_LAPTOP,
+  STEP_DESKTOP,
+  DEFAULT_MOBILE,
+  DEFAULT_LAPTOP,
+  DEFAULT_LAPTOP_WIDE,
+  DEFAULT_DESKTOP,
+} from '../../utils/constants';
 
 const movieStep = () => {
-  if (window.screen.width < 768) {
-    return 5;
+  if (window.screen.width < SCREEN_MOBILE) {
+    return DEFAULT_MOBILE;
   }
-  if (window.screen.width >= 768 && window.screen.width < 922) {
-    return 8;
+  if (
+    window.screen.width >= SCREEN_MOBILE &&
+    window.screen.width < SCREEN_LAPTOP
+  ) {
+    return DEFAULT_LAPTOP;
   }
-  if (window.screen.width >= 922 && window.screen.width <= 1237) {
-    return 12;
+  if (
+    window.screen.width >= SCREEN_LAPTOP &&
+    window.screen.width <= SCREEN_DESKTOP
+  ) {
+    return DEFAULT_LAPTOP_WIDE;
   }
-  if (window.screen.width > 1237) {
-    return 16;
+  if (window.screen.width > SCREEN_DESKTOP) {
+    return DEFAULT_DESKTOP;
   }
 };
 
 const movieNextStep = () => {
-  if (window.screen.width < 922) {
-    return 2;
+  if (window.screen.width < SCREEN_LAPTOP) {
+    return STEP_MOBILE;
   }
-  if (window.screen.width >= 922 && window.screen.width <= 1237) {
-    return 3;
+  if (
+    window.screen.width >= SCREEN_LAPTOP &&
+    window.screen.width <= SCREEN_DESKTOP
+  ) {
+    return STEP_LAPTOP;
   }
-  if (window.screen.width >= 1237) {
-    return 4;
+  if (window.screen.width >= SCREEN_DESKTOP) {
+    return STEP_DESKTOP;
   }
 };
 
@@ -44,15 +64,19 @@ export default function MoviesCardList({
     foundedMovies.slice(0, movieStep())
   );
   const [nextStep, setNextStep] = useState(movieNextStep);
-
   function showMore() {
     setShowMovies(foundedMovies.slice(0, nextStep + movieStep()));
     setNextStep(nextStep + movieNextStep());
   }
+  useEffect(() => {
+    setShowMovies(
+      foundedMovies.slice(0, nextStep + movieStep() - movieNextStep())
+    );
+  }, [foundedMovies]);
 
   useEffect(() => {
     setShowMovies(foundedMovies.slice(0, movieStep()));
-  }, [foundedMovies]);
+  }, []);
 
   return (
     <section className='movies-list'>
@@ -77,7 +101,7 @@ export default function MoviesCardList({
           })}
         </ul>
       )}
-      {foundedMovies.length > nextStep && !inSearch && !noResult && (
+      {foundedMovies.length > showMovies.length && !inSearch && !noResult && (
         <button
           type='button'
           onClick={showMore}

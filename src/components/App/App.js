@@ -14,6 +14,7 @@ import ProtectedRouteElement from '../ProtectedRoute';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
+import Auth from '../../utils/auth';
 
 function App() {
   const [movies, setMovies] = React.useState([]);
@@ -35,6 +36,9 @@ function App() {
   const [searchTextSavedMovie, setSearchTextSavedMovie] = React.useState('');
   const [errorSearch, setErrorSearch] = React.useState('');
   const [confirmation, setConfirmation] = React.useState(false);
+  const [isLogin, setIsLogin] = React.useState(
+    JSON.parse(localStorage.getItem('login')) || false
+  );
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,12 +69,12 @@ function App() {
   }
 
   function searchSaveMovie(value) {
-    localStorage.setItem('searchSaveMovieValue', value);
-    setPreload();
-    if (value.length === 0) {
+    if (value === null || value === '') {
       setError(true);
       setErrorSearch('Нужно ввести ключевое слово');
     } else {
+      localStorage.setItem('searchSaveMovieValue', value);
+      setPreload();
       const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
       const foundMovies = allSavedMovies.filter((searchMovie) => {
         return (
@@ -91,23 +95,19 @@ function App() {
   }
 
   function searchMovie(value) {
-    setPreload();
-    localStorage.setItem('searchMovieValue', value);
-    localStorage.setItem(
-      'allMovieSearchValue',
-      JSON.stringify(searchTextMovie)
-    );
-    localStorage.setItem(
-      'savedMovieSearchValue',
-      JSON.stringify(searchTextSavedMovie)
-    );
-    moviesApi
-      .getMovies()
-      .then((res) => {
-        if (value === '') {
-          setError(true);
-          setErrorSearch('Нужно ввести ключевое слово');
-        } else {
+    if (value === '') {
+      setError(true);
+      setErrorSearch('Нужно ввести ключевое слово');
+    } else {
+      setPreload();
+      localStorage.setItem('searchMovieValue', value);
+      localStorage.setItem(
+        'allMovieSearchValue',
+        JSON.stringify(searchTextMovie)
+      );
+      moviesApi
+        .getMovies()
+        .then((res) => {
           const foundMovies = res.filter((movie) => {
             return movie.nameRU.toLowerCase().includes(value.toLowerCase());
           });
@@ -125,11 +125,11 @@ function App() {
             localStorage.setItem('movies', JSON.stringify(res));
             setMovies(JSON.parse(localStorage.getItem('movies')) || []);
           }
-        }
-      })
-      .catch((error) => {
-        console.log(`Ошибка: ${error}`);
-      });
+        })
+        .catch((error) => {
+          console.log(`Ошибка: ${error}`);
+        });
+    }
   }
 
   function handleChangeAllCheckbox(e) {
@@ -139,7 +139,6 @@ function App() {
 
   function handleChangeSaveCheckbox(e) {
     setCheckboxSaveChecked(e.target.checked);
-    localStorage.setItem('checkboxSaveShort', JSON.stringify(e.target.checked));
   }
 
   function setPreload() {
@@ -231,7 +230,6 @@ function App() {
           'savedMovies',
           JSON.stringify([film, ...moviesSaved])
         );
-        setIsLiked(true);
       })
       .catch((err) => console.log(`Ошибка: ${err}`));
   }
@@ -262,11 +260,13 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
+
           setError(false);
         }
       })
       .then((res) => {
         setLoggedIn(true);
+        localStorage.setItem('login', JSON.stringify(loggedIn));
         navigate('/movies', { replace: true });
       })
       .catch((error) => {
@@ -286,17 +286,12 @@ function App() {
           setSavedMovies(movies);
           setCurrentUser(user);
           setLoggedIn(true);
-          setSearchTextSavedMovie(
-            JSON.parse(localStorage.getItem('savedMovieSearchValue'))
-          );
+          localStorage.setItem('login', JSON.stringify(loggedIn));
           setSearchTextMovie(
             JSON.parse(localStorage.getItem('allMovieSearchValue')) || ''
           );
           setCheckboxAllChecked(
             JSON.parse(localStorage.getItem('checkboxAllShort')) || false
-          );
-          setCheckboxSaveChecked(
-            JSON.parse(localStorage.getItem('checkboxSaveShort')) || false
           );
           localStorage.setItem('savedMovies', JSON.stringify(movies));
         })
@@ -322,91 +317,100 @@ function App() {
           <Route
             path='/signup'
             element={
-              <Register
-                onRegisterUser={handleRegisterUser}
-                error={error}
-                setError={setError}
-                errorText={errorTextRegister}
-              />
+              <Auth loggedIn={loggedIn}>
+                <Register
+                  onRegisterUser={handleRegisterUser}
+                  error={error}
+                  setError={setError}
+                  errorText={errorTextRegister}
+                />
+              </Auth>
             }
           />
           <Route
             path='/signin'
             element={
-              <Login
-                onLoginUser={handleLoginUser}
-                error={error}
-                setError={setError}
-                errorText={errorTextLogin}
-              />
+              <Auth loggedIn={loggedIn}>
+                <Login
+                  onLoginUser={handleLoginUser}
+                  error={error}
+                  setError={setError}
+                  errorText={errorTextLogin}
+                />
+              </Auth>
             }
           />
           <Route
             path='/profile'
             element={
-              <ProtectedRouteElement
-                element={Profile}
-                loggedIn={loggedIn}
-                onUpdateUser={handleUpdateUser}
-                error={error}
-                isEdit={editProfile}
-                editProfile={handleEditProfile}
-                signOut={signOut}
-                setError={setError}
-                errorText={errorTextUpdate}
-                confirmation={confirmation}
-                path='/profile'
-              />
+              <ProtectedRouteElement loggedIn={loggedIn}>
+                <Profile
+                  loggedIn={loggedIn}
+                  onUpdateUser={handleUpdateUser}
+                  error={error}
+                  isEdit={editProfile}
+                  editProfile={handleEditProfile}
+                  signOut={signOut}
+                  setError={setError}
+                  errorText={errorTextUpdate}
+                  confirmation={confirmation}
+                  path='/profile'
+                />
+              </ProtectedRouteElement>
             }
           />
           <Route
             path='/movies'
             element={
-              <ProtectedRouteElement
-                element={Movies}
-                loggedIn={loggedIn}
-                inSearch={inSearch}
-                searchMovie={searchMovie}
-                errorSearch={errorSearch}
-                checkboxChecked={checkboxAllChecked}
-                changeCheckbox={handleChangeAllCheckbox}
-                setPreload={setPreload}
-                error={error}
-                noResult={noResult}
-                searchText={searchTextMovie}
-                setSearchText={setSearchTextMovie}
-                foundedMovies={foundedMovies}
-                saveMovie={saveMovie}
-                isLiked={isLiked}
-                savedMovies={savedMovies}
-                deleteMovie={deleteMovie}
-                path='/movies'
-              />
+              <ProtectedRouteElement loggedIn={isLogin}>
+                <Movies
+                  loggedIn={loggedIn}
+                  inSearch={inSearch}
+                  searchMovie={searchMovie}
+                  errorSearch={errorSearch}
+                  checkboxChecked={checkboxAllChecked}
+                  changeCheckbox={handleChangeAllCheckbox}
+                  setPreload={setPreload}
+                  error={error}
+                  noResult={noResult}
+                  searchText={searchTextMovie}
+                  setSearchText={setSearchTextMovie}
+                  foundedMovies={foundedMovies}
+                  saveMovie={saveMovie}
+                  isLiked={isLiked}
+                  setError={setError}
+                  savedMovies={savedMovies}
+                  deleteMovie={deleteMovie}
+                  path='/movies'
+                />
+              </ProtectedRouteElement>
             }
           />
           <Route
             path='/saved-movies'
             element={
-              <ProtectedRouteElement
-                element={SavedMovies}
-                loggedIn={loggedIn}
-                noResult={noResult}
-                errorSearch={errorSearch}
-                path='/saved-movies'
-                error={error}
-                inSearch={inSearch}
-                searchMovie={searchSaveMovie}
-                changeCheckbox={handleChangeSaveCheckbox}
-                setPreload={setPreload}
-                movies={movies}
-                isLiked={isLiked}
-                checkboxChecked={checkboxSaveChecked}
-                searchText={searchTextSavedMovie}
-                setSearchText={setSearchTextSavedMovie}
-                savedMovies={savedMovies}
-                foundedMovies={savedMovies}
-                deleteMovie={deleteMovie}
-              />
+              <ProtectedRouteElement loggedIn={isLogin}>
+                <SavedMovies
+                  setError={setError}
+                  loggedIn={loggedIn}
+                  noResult={noResult}
+                  errorSearch={errorSearch}
+                  path='/saved-movies'
+                  error={error}
+                  inSearch={inSearch}
+                  searchMovie={searchSaveMovie}
+                  changeCheckbox={handleChangeSaveCheckbox}
+                  setPreload={setPreload}
+                  movies={movies}
+                  isLiked={true}
+                  checkboxChecked={checkboxSaveChecked}
+                  searchText={searchTextSavedMovie}
+                  setSearchText={setSearchTextSavedMovie}
+                  savedMovies={savedMovies}
+                  foundedMovies={savedMovies}
+                  deleteMovie={deleteMovie}
+                />
+              </ProtectedRouteElement>
             }
           />
           <Route path='*' element={<NotFound />} />

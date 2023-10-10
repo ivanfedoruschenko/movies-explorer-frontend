@@ -16,20 +16,18 @@ export function useForm() {
 
     const isName = name === 'name';
     const isEmail = name === 'email';
+    const isPassword = name === 'password';
     const isNameValidation = isName ? regexName.test(value) : true;
     const isEmailValidation = isEmail ? regexEmail.test(value) : true;
+    const isPasswordValidation = isPassword ? value.length >= 8 : true;
 
     const error =
-      !isNameValidation && !isEmailValidation
+      !isNameValidation && !isEmailValidation && !isPasswordValidation
         ? event.target.validationMessage || 'Использованы недопустимые символы.'
         : event.target.validationMessage;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: error });
-    setIsValid(
-      isNameValidation &&
-        isEmailValidation &&
-        target.closest('form').checkValidity()
-    );
+    setIsValid(isNameValidation && target.closest('form').checkValidity());
   };
 
   const resetForm = useCallback(

@@ -1,8 +1,12 @@
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { logDOM } from '@testing-library/react';
+import { useEffect } from 'react';
 
 export default function Movies(props) {
+  useEffect(() => {
+    props.setError(false);
+  }, []);
   return (
     <main className='movies'>
       <SearchForm
@@ -22,6 +26,7 @@ export default function Movies(props) {
         saveMovie={props.saveMovie}
         noResult={props.noResult}
         inSearch={props.inSearch}
+        checkboxChecked={props.checkboxChecked}
         loggedIn={props.loggedIn}
         foundedMovies={
           props.foundedMovies

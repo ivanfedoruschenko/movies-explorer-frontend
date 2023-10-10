@@ -61,7 +61,7 @@ export default function Profile(props) {
               className='input profile__input'
               value={values.email ? values.email : ''}
               placeholder='Email'
-              pattern='^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$'
+              pattern='^[^\s@]+@[^\s@]+\.[^\s@]{2,}$'
               disabled={!props.isEdit}
             />
           </label>

@@ -1,7 +1,11 @@
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
+import { useEffect } from 'react';
 
 export default function SavedMovies(props) {
+  useEffect(() => {
+    props.setError(false);
+  }, []);
   return (
     <main className='movies'>
       <SearchForm
@@ -29,7 +33,7 @@ export default function SavedMovies(props) {
             : []
         }
         savedMovies={props.savedMovies}
-        isLiked={true}
+        isLiked={props.isLiked}
         deleteMovie={props.deleteMovie}
       />
     </main>

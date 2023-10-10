@@ -35,7 +35,6 @@ export default function Register(props) {
           minLength='2'
           maxLength='15'
           placeholder='Имя'
-          formNoValidate
           required
         />
       </label>
@@ -46,9 +45,9 @@ export default function Register(props) {
           type='email'
           value={values.email ? values.email : ''}
           name='email'
+          pattern='^[^\s@]+@[^\s@]+\.[^\s@]{2,}$'
           onChange={handleChange}
           placeholder='Email'
-          formNoValidate
           required
         />
       </label>
@@ -65,7 +64,6 @@ export default function Register(props) {
           minLength='8'
           maxLength='20'
           placeholder='Пароль'
-          formNoValidate
           required
         />
         {props.error && <span className='auth__error'>{props.errorText}</span>}

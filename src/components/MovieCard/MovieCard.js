@@ -41,7 +41,6 @@ export default function MovieCard({
         }`
       : 'movie-card__like_type_disable'
   }`;
-
   useEffect(() => {
     const moviesSave = JSON.parse(localStorage.getItem('savedMovies') || '[]');
     moviesSave.forEach((savedFilm) => {
@@ -49,7 +48,7 @@ export default function MovieCard({
         setLiked(true);
       }
     });
-  }, [loggedIn]);
+  }, [setLiked]);
 
   return (
     <div className='movie-card'>

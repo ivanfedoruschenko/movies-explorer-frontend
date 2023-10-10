@@ -34,7 +34,7 @@ export default function Login(props) {
           name='email'
           onChange={handleChange}
           placeholder='email'
-          formNoValidate
+          pattern='^[^\s@]+@[^\s@]+\.[^\s@]{2,}$'
           required
         />
       </label>
@@ -51,7 +51,6 @@ export default function Login(props) {
           minLength='8'
           maxLength='20'
           onChange={handleChange}
-          formNoValidate
           required
         />
         {props.error && <span className='auth__error'>{props.errorText}</span>}
