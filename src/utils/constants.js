@@ -1,6 +1,6 @@
 const SCREEN_MOBILE = 768;
 const SCREEN_LAPTOP = 922;
-const SCREEN_DESKTOP = 1237;
+const SCREEN_DESKTOP = 1236;
 
 const STEP_MOBILE = 2;
 const STEP_LAPTOP = 3;

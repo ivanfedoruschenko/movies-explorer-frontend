@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useForm } from '../../hooks/useForm';
+import React from 'react';
 
 export default function SearchForm(props) {
   function handleChangeValue(e) {

@@ -15,37 +15,34 @@ import {
 } from '../../utils/constants';
 
 const movieStep = () => {
-  if (window.screen.width < SCREEN_MOBILE) {
+  if (window.innerWidth < SCREEN_MOBILE) {
     return DEFAULT_MOBILE;
   }
-  if (
-    window.screen.width >= SCREEN_MOBILE &&
-    window.screen.width < SCREEN_LAPTOP
-  ) {
+  if (window.innerWidth >= SCREEN_MOBILE && window.innerWidth < SCREEN_LAPTOP) {
     return DEFAULT_LAPTOP;
   }
   if (
-    window.screen.width >= SCREEN_LAPTOP &&
-    window.screen.width <= SCREEN_DESKTOP
+    window.innerWidth >= SCREEN_LAPTOP &&
+    window.innerWidth <= SCREEN_DESKTOP
   ) {
     return DEFAULT_LAPTOP_WIDE;
   }
-  if (window.screen.width > SCREEN_DESKTOP) {
+  if (window.innerWidth > SCREEN_DESKTOP) {
     return DEFAULT_DESKTOP;
   }
 };
 
 const movieNextStep = () => {
-  if (window.screen.width < SCREEN_LAPTOP) {
+  if (window.innerWidth < SCREEN_LAPTOP) {
     return STEP_MOBILE;
   }
   if (
-    window.screen.width >= SCREEN_LAPTOP &&
-    window.screen.width <= SCREEN_DESKTOP
+    window.innerWidth >= SCREEN_LAPTOP &&
+    window.innerWidth <= SCREEN_DESKTOP
   ) {
     return STEP_LAPTOP;
   }
-  if (window.screen.width >= SCREEN_DESKTOP) {
+  if (window.innerWidth >= SCREEN_DESKTOP) {
     return STEP_DESKTOP;
   }
 };
@@ -59,15 +56,18 @@ export default function MoviesCardList({
   foundedMovies,
   noResult,
   loggedIn,
+  setNoResult,
+  checkboxChecked,
 }) {
   const [showMovies, setShowMovies] = useState(
-    foundedMovies.slice(0, movieStep())
+    foundedMovies.slice(0, movieStep)
   );
   const [nextStep, setNextStep] = useState(movieNextStep);
   function showMore() {
     setShowMovies(foundedMovies.slice(0, nextStep + movieStep()));
     setNextStep(nextStep + movieNextStep());
   }
+
   useEffect(() => {
     setShowMovies(
       foundedMovies.slice(0, nextStep + movieStep() - movieNextStep())
@@ -75,8 +75,18 @@ export default function MoviesCardList({
   }, [foundedMovies]);
 
   useEffect(() => {
+    if (foundedMovies.length === 0 && checkboxChecked) {
+      setNoResult(true);
+    }
+    if (foundedMovies.length > 0) {
+      setNoResult(false);
+    }
+  }, [checkboxChecked, foundedMovies]);
+
+  useEffect(() => {
     setShowMovies(foundedMovies.slice(0, movieStep()));
-  }, []);
+    setNextStep(movieNextStep());
+  }, [inSearch]);
 
   return (
     <section className='movies-list'>

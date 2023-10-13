@@ -6,8 +6,15 @@ import { useForm } from '../../hooks/useForm';
 export default function Profile(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  const { isValid, values, errors, handleChange, setValues, resetForm } =
-    useForm();
+  const {
+    isValid,
+    values,
+    errors,
+    handleChange,
+    setValues,
+    resetForm,
+    setIsValid,
+  } = useForm();
 
   React.useEffect(() => {
     resetForm();
@@ -18,7 +25,7 @@ export default function Profile(props) {
       name: currentUser.name,
       email: currentUser.email,
     });
-  }, [setValues]);
+  }, [setValues, currentUser.name, currentUser.email]);
 
   const buttonIsValid =
     isValid &&
@@ -26,7 +33,7 @@ export default function Profile(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setIsValid(false);
     props.onUpdateUser({
       name: values.name,
       email: values.email,
@@ -38,11 +45,13 @@ export default function Profile(props) {
         <h1 className='title'>Привет, {currentUser.name}!</h1>
 
         <form className='profile__form' onSubmit={handleSubmit}>
-          <label className='profile__label'>
+          <label className='profile__label profile__label_type_underline'>
             Имя
             <input
               onChange={handleChange}
-              className='input profile__input'
+              className={`input profile__input ${
+                errors.name && 'profile__input_type_error'
+              }`}
               type='text'
               value={values.name ? values.name : ''}
               name='name'
@@ -52,22 +61,36 @@ export default function Profile(props) {
               disabled={!props.isEdit}
             />
           </label>
-          <label className='profile__label'>
+          <span
+            className={`auth__error ${errors.name && 'auth__error_active'}`}
+          >
+            {errors.name}
+          </span>
+          <label className='profile__label profile__label_type_position'>
             Email
             <input
               onChange={handleChange}
               name='email'
               type='email'
-              className='input profile__input'
+              className={`input profile__input ${
+                errors.email && 'profile__input_type_error'
+              }`}
               value={values.email ? values.email : ''}
               placeholder='Email'
               pattern='^[^\s@]+@[^\s@]+\.[^\s@]{2,}$'
               disabled={!props.isEdit}
             />
           </label>
+          <span
+            className={`auth__error ${errors.email && 'auth__error_active'}`}
+          >
+            {errors.email}
+          </span>
           {props.isEdit ? (
             <div className='profile__btn-container'>
-              {errors && <p className='profile__error'>{props.errorText}</p>}
+              {props.error && (
+                <p className='profile__error'>{props.errorText}</p>
+              )}
               {props.confirmation && (
                 <span className='profile__confirmation'>
                   Данные успешно сохранены

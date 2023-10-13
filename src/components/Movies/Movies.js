@@ -25,6 +25,7 @@ export default function Movies(props) {
       <MoviesCardList
         saveMovie={props.saveMovie}
         noResult={props.noResult}
+        setNoResult={props.setNoResult}
         inSearch={props.inSearch}
         checkboxChecked={props.checkboxChecked}
         loggedIn={props.loggedIn}

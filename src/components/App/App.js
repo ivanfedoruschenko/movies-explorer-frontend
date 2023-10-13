@@ -82,20 +82,20 @@ function App() {
           searchMovie.nameEN.toLowerCase().includes(value.toLowerCase())
         );
       });
+      localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
+      setSavedMovies(foundMovies);
       if (foundMovies.length === 0) {
         setNoResult(true);
       } else {
         setError(false);
         setNoResult(false);
-        localStorage.setItem('searchSaveMovies', JSON.stringify(foundMovies));
-        setSavedMovies(foundMovies);
       }
       setMovies(JSON.parse(localStorage.getItem('movies')) || []);
     }
   }
 
   function searchMovie(value) {
-    if (value === '') {
+    if (value === '' || value === null) {
       setError(true);
       setErrorSearch('Нужно ввести ключевое слово');
     } else {
@@ -111,16 +111,13 @@ function App() {
           const foundMovies = res.filter((movie) => {
             return movie.nameRU.toLowerCase().includes(value.toLowerCase());
           });
+          localStorage.setItem('searchAllMovies', JSON.stringify(foundMovies));
+          setFoundedMovies(foundMovies);
           if (foundMovies.length === 0) {
             setNoResult(true);
           } else {
             setNoResult(false);
             setError(false);
-            localStorage.setItem(
-              'searchAllMovies',
-              JSON.stringify(foundMovies)
-            );
-            setFoundedMovies(foundMovies);
 
             localStorage.setItem('movies', JSON.stringify(res));
             setMovies(JSON.parse(localStorage.getItem('movies')) || []);
@@ -149,12 +146,22 @@ function App() {
   }
 
   function setConfirm() {
+    setError(false);
     setConfirmation(true);
     setTimeout(() => {
       setConfirmation(false);
       setEditProfile(false);
     }, 1000);
   }
+
+  /*
+  function setErrorToggle() {
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+    }, 1000);
+  }
+*/
 
   const handleRegisterUser = (data) => {
     const { name, email, password } = data;
@@ -236,7 +243,7 @@ function App() {
   function deleteMovie(movie) {
     const deletedMovie = movie.movieId
       ? savedMovies.find((film) => film.movieId === movie.movieId)
-      : savedMovies.find((film) => film.id === movie.movieId);
+      : savedMovies.find((film) => film.movieId === movie.id);
     mainApi
       .deleteMovie(deletedMovie._id, localStorage.token)
       .then((movie) => {
@@ -348,7 +355,7 @@ function App() {
           <Route
             path='/profile'
             element={
-              <ProtectedRouteElement loggedIn={loggedIn}>
+              <ProtectedRouteElement loggedIn={isLogin}>
                 <Profile
                   loggedIn={loggedIn}
                   onUpdateUser={handleUpdateUser}
@@ -378,6 +385,7 @@ function App() {
                   setPreload={setPreload}
                   error={error}
                   noResult={noResult}
+                  setNoResult={setNoResult}
                   searchText={searchTextMovie}
                   setSearchText={setSearchTextMovie}
                   foundedMovies={foundedMovies}
@@ -399,6 +407,7 @@ function App() {
                   setError={setError}
                   loggedIn={loggedIn}
                   noResult={noResult}
+                  setNoResult={setNoResult}
                   errorSearch={errorSearch}
                   path='/saved-movies'
                   error={error}
@@ -408,10 +417,12 @@ function App() {
                   setPreload={setPreload}
                   movies={movies}
                   isLiked={true}
+                  setInsearch={setInSearch}
+                  setCheckbox={setCheckboxSaveChecked}
+                  setSavedMovies={setSavedMovies}
                   checkboxChecked={checkboxSaveChecked}
                   searchText={searchTextSavedMovie}
                   setSearchText={setSearchTextSavedMovie}
-                  savedMovies={savedMovies}
                   foundedMovies={savedMovies}
                   deleteMovie={deleteMovie}
                 />

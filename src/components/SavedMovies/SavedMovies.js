@@ -5,6 +5,15 @@ import { useEffect } from 'react';
 export default function SavedMovies(props) {
   useEffect(() => {
     props.setError(false);
+    props.setSearchText('');
+    props.setCheckbox(false);
+    props.setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')));
+    props.setInsearch(false);
+    props.setNoResult(false);
+
+    return () => {
+      props.setNoResult(false);
+    };
   }, []);
   return (
     <main className='movies'>
@@ -24,6 +33,8 @@ export default function SavedMovies(props) {
       <MoviesCardList
         saveMovie={props.saveMovie}
         noResult={props.noResult}
+        setNoResult={props.setNoResult}
+        checkboxChecked={props.checkboxChecked}
         inSearch={props.inSearch}
         foundedMovies={
           props.foundedMovies

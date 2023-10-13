@@ -3,7 +3,8 @@ import AuthWindow from '../AuthWindow/AuthWIndow';
 import { useForm } from '../../hooks/useForm';
 
 export default function Register(props) {
-  const { values, isValid, handleChange, resetForm } = useForm();
+  const { values, isValid, handleChange, resetForm, errors, setIsValid } =
+    useForm();
 
   useEffect(() => {
     resetForm();
@@ -11,6 +12,7 @@ export default function Register(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsValid(false);
     props.onRegisterUser({ ...values });
   };
 
@@ -22,12 +24,16 @@ export default function Register(props) {
       link={'Войти'}
       text={'Уже зарегистрированы?'}
       toLink={'/signin'}
-      error={isValid}
+      error={props.error}
+      errorText={props.errorText}
+      isValid={isValid}
     >
       <label className='auth__label'>
         Имя
         <input
-          className='input auth__input'
+          className={`input auth__input  ${
+            errors.name && 'auth__input_type_error'
+          }`}
           type='text'
           value={values.name ? values.name : ''}
           name='name'
@@ -37,11 +43,16 @@ export default function Register(props) {
           placeholder='Имя'
           required
         />
+        <span className={`auth__error ${errors.name && 'auth__error_active'}`}>
+          {errors.name}
+        </span>
       </label>
       <label className='auth__label'>
         Email
         <input
-          className='input auth__input'
+          className={`input auth__input  ${
+            errors.email && 'auth__input_type_error'
+          }`}
           type='email'
           value={values.email ? values.email : ''}
           name='email'
@@ -50,12 +61,15 @@ export default function Register(props) {
           placeholder='Email'
           required
         />
+        <span className={`auth__error ${errors.email && 'auth__error_active'}`}>
+          {errors.email}
+        </span>
       </label>
       <label className='auth__label auth__label_type_register'>
         Пароль
         <input
           className={`input auth__input  ${
-            props.error && 'auth__input_type_error'
+            errors.password && 'auth__input_type_error'
           }`}
           type='password'
           value={values.password ? values.password : ''}
@@ -66,7 +80,11 @@ export default function Register(props) {
           placeholder='Пароль'
           required
         />
-        {props.error && <span className='auth__error'>{props.errorText}</span>}
+        <span
+          className={`auth__error ${errors.password && 'auth__error_active'}`}
+        >
+          {errors.password}
+        </span>
       </label>
     </AuthWindow>
   );

@@ -109,12 +109,16 @@
 @import url('../blocks/button-opacity/button-opacity.css');
 @import url('../blocks/link-opacity/link-opacity.css');
 @import url('../blocks/auth/__error/auth__error.css');
-@import url('../blocks/auth/__error/_disabled/auth__error_disabled.css');
+@import url('../blocks/auth/__error/_active/auth__error_active.css');
+@import url('../blocks/auth/__error/_type/auth__error_type_general.css');
 @import url('../blocks/profile/profile.css');
 @import url('../blocks/profile/__container/profile__container.css');
 @import url('../blocks/profile/__form/profile__form.css');
 @import url('../blocks/profile/__label/profile__label.css');
+@import url('../blocks/profile/__label/_type/profile__label_type_position.css');
+@import url('../blocks/profile/__label/_type/profile__label_type_underline.css');
 @import url('../blocks/profile/__input/profile__input.css');
+@import url('../blocks/profile/__input/_type/profile__input_type_error.css');
 @import url('../blocks/profile/__error/profile__error.css');
 @import url('../blocks/profile/__confirmation/profile__confirmation.css');
 @import url('../blocks/profile/__btn-container/profile__btn-container.css');

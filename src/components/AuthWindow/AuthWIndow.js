@@ -10,10 +10,15 @@ export default function AuthWindow(props) {
       <h1 className='title auth__title'>{props.title}</h1>
       <form className='auth__form' onSubmit={props.submit} name={props.name}>
         {props.children}
+        {props.error && (
+          <span className='auth__error auth__error_type_general'>
+            {props.errorText}
+          </span>
+        )}
         <button
           type='submit'
           className='button-opacity auth__button'
-          disabled={!props.error}
+          disabled={!props.isValid}
         >
           {props.button}
         </button>
