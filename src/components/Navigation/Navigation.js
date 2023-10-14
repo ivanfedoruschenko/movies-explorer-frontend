@@ -1,6 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { useState } from 'react';
-import iconCross from '../../images/navigation__icon-cross.svg';
+import React, { useState } from 'react';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,17 +27,38 @@ export default function Navigation() {
           <NavLink
             className={`${navLinkClassName} navigation__link_vision_main`}
             to='/'
+            onClick={() => {
+              setIsOpen(false);
+            }}
           >
             Главная
           </NavLink>
-          <NavLink className={navLinkClassName} to='/movies'>
+          <NavLink
+            className={navLinkClassName}
+            to='/movies'
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
             Фильмы
           </NavLink>
-          <NavLink className={navLinkClassName} to='/saved-movies'>
+          <NavLink
+            className={navLinkClassName}
+            to='/saved-movies'
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
             Сохраненные фильмы
           </NavLink>
         </nav>
-        <Link className='link-opacity navigation__link-profile' to='/profile'>
+        <Link
+          className='link-opacity navigation__link-profile'
+          to='/profile'
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
           Аккаунт
           <div className='navigation__profile-icon'></div>
         </Link>

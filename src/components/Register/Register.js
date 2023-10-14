@@ -1,25 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthWindow from '../AuthWindow/AuthWIndow';
+import { useForm } from '../../hooks/useForm';
 
 export default function Register(props) {
-  const [formValue, setFormValue] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  const { values, isValid, handleChange, resetForm, errors, setIsValid } =
+    useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    resetForm();
+  }, [resetForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onRegisterUser({ ...formValue });
+    setIsValid(false);
+    props.onRegisterUser({ ...values });
   };
 
   return (
@@ -30,13 +24,18 @@ export default function Register(props) {
       link={'Войти'}
       text={'Уже зарегистрированы?'}
       toLink={'/signin'}
+      error={props.error}
+      errorText={props.errorText}
+      isValid={isValid}
     >
       <label className='auth__label'>
         Имя
         <input
-          className='input auth__input'
+          className={`input auth__input  ${
+            errors.name && 'auth__input_type_error'
+          }`}
           type='text'
-          value={formValue.name}
+          value={values.name ? values.name : ''}
           name='name'
           onChange={handleChange}
           minLength='2'
@@ -44,26 +43,36 @@ export default function Register(props) {
           placeholder='Имя'
           required
         />
-        <span></span>
+        <span className={`auth__error ${errors.name && 'auth__error_active'}`}>
+          {errors.name}
+        </span>
       </label>
       <label className='auth__label'>
         Email
         <input
-          className='input auth__input'
+          className={`input auth__input  ${
+            errors.email && 'auth__input_type_error'
+          }`}
           type='email'
-          value={formValue.email}
+          value={values.email ? values.email : ''}
           name='email'
+          pattern='^[^\s@]+@[^\s@]+\.[^\s@]{2,}$'
           onChange={handleChange}
           placeholder='Email'
           required
         />
+        <span className={`auth__error ${errors.email && 'auth__error_active'}`}>
+          {errors.email}
+        </span>
       </label>
       <label className='auth__label auth__label_type_register'>
         Пароль
         <input
-          className='input auth__input auth__input_type_error'
+          className={`input auth__input  ${
+            errors.password && 'auth__input_type_error'
+          }`}
           type='password'
-          value={formValue.password}
+          value={values.password ? values.password : ''}
           name='password'
           onChange={handleChange}
           minLength='8'
@@ -71,7 +80,11 @@ export default function Register(props) {
           placeholder='Пароль'
           required
         />
-        <span className='auth__error'>Что-то пошло не так...</span>
+        <span
+          className={`auth__error ${errors.password && 'auth__error_active'}`}
+        >
+          {errors.password}
+        </span>
       </label>
     </AuthWindow>
   );

@@ -1,40 +1,48 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function SearchForm(props) {
-  const [searchValue, setSearchValue] = useState('');
+  function handleChangeValue(e) {
+    props.setSearchText(e.target.value);
+  }
 
-  const handleChange = (e) => {
-    const { value } = e.target;
-
-    setSearchValue({
-      ...searchValue,
-      value,
-    });
-  };
-
-  React.useEffect(() => {
-    setSearchValue('');
-  }, []);
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (props.searchMovie(props.searchText)) {
+      props.setPreload();
+      props.searchMovie(props.searchText);
+    }
+  }
 
   return (
-    <form className='search-form'>
+    <form className='search-form' onSubmit={handleSubmit} noValidate>
       <div className='search-form__container'>
         <div className='search-form__icon'></div>
         <input
-          onChange={handleChange}
+          onChange={handleChangeValue}
           className='search-form__input'
           type='text'
+          name='search'
+          value={props.searchText || ''}
           placeholder='Фильм'
+          minLength='1'
           required
         />
+        {props.error && (
+          <span className='auth__error'>{props.errorSearch}</span>
+        )}
         <button type='submit' className='button-opacity search-form__button'>
           Найти
         </button>
       </div>
       <div className='search-form__wrapper'>
         <label className='search-form__label'>
-          <input className='search-form__checkbox' type='checkbox' />
-          <span className='button-opacity search-form__pseudo-checkbox round'></span>
+          <input
+            className='search-form__checkbox'
+            checked={props.checkboxChecked}
+            onChange={props.changeCheckbox}
+            type='checkbox'
+          />
+          <span className='button-opacity search-form__pseudo-checkbox'></span>
         </label>
         <p className='search-form__text'>Короткометражки</p>
       </div>

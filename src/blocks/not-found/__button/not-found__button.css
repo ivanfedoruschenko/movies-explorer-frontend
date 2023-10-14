@@ -8,6 +8,7 @@
   line-height: normal;
   margin: 184px 0 0;
   text-decoration: none;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 426px) {
