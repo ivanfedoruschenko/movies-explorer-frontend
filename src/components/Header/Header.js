@@ -4,8 +4,6 @@ import { useState } from 'react';
 import Navigation from '../Navigation/Navigation';
 
 export default function Header(props) {
-  const [isLogged, setIsLogged] = useState(true);
-
   const menuUnLogin = (
     <nav className='header__auth-container'>
       <Link className='header__link header__link_type_register' to='/signup'>
@@ -27,7 +25,7 @@ export default function Header(props) {
         <Link to='/'>
           <div className='logo button-opacity' />
         </Link>
-        {isLogged ? <Navigation /> : menuUnLogin}
+        {props.loggedIn ? <Navigation/> : menuUnLogin}
       </div>
     </header>
   );

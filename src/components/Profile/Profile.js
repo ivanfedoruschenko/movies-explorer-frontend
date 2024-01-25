@@ -1,76 +1,127 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useForm } from '../../hooks/useForm';
 
-export default function Profile() {
-  const [isEdit, setIsEdit] = useState(false);
-  const [formValue, setFormValue] = useState({
-    name: '',
-    email: '',
-  });
+export default function Profile(props) {
+  const currentUser = React.useContext(CurrentUserContext);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
+  const {
+    isValid,
+    values,
+    errors,
+    handleChange,
+    setValues,
+    resetForm,
+    setIsValid,
+  } = useForm();
 
   React.useEffect(() => {
-    setFormValue({ name: '', email: '' });
-  }, []);
-  const handleClickEdit = () => {
-    setIsEdit(!isEdit);
-  };
+    resetForm();
+  }, [resetForm]);
 
+  React.useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [setValues, currentUser.name, currentUser.email]);
+
+  const buttonIsValid =
+    isValid &&
+    (values.name !== currentUser.name || values.email !== currentUser.email);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsValid(false);
+    props.onUpdateUser({
+      name: values.name,
+      email: values.email,
+    });
+  };
   return (
     <main className='profile'>
       <section className='profile__container'>
-        <h1 className='title'>Привет, Виталий!</h1>
+        <h1 className='title'>Привет, {currentUser.name}!</h1>
 
-        <form className='profile__form'>
-          <label className='profile__label'>
+        <form className='profile__form' onSubmit={handleSubmit}>
+          <label className='profile__label profile__label_type_underline'>
             Имя
             <input
               onChange={handleChange}
-              className='input profile__input'
-              value='Виталий'
-              placeholder='Виталий'
+              className={`input profile__input ${
+                errors.name && 'profile__input_type_error'
+              }`}
+              type='text'
+              value={values.name ? values.name : ''}
+              name='name'
+              placeholder='Имя'
               minLength='2'
               maxLength='20'
+              disabled={!props.isEdit}
             />
           </label>
-          <label className='profile__label'>
+          <span
+            className={`auth__error ${errors.name && 'auth__error_active'}`}
+          >
+            {errors.name}
+          </span>
+          <label className='profile__label profile__label_type_position'>
             Email
             <input
               onChange={handleChange}
-              className='input profile__input'
-              value='pochta@yandex.ru'
-              placeholder='pochta@yandex.ru'
+              name='email'
+              type='email'
+              className={`input profile__input ${
+                errors.email && 'profile__input_type_error'
+              }`}
+              value={values.email ? values.email : ''}
+              placeholder='Email'
+              pattern='^[^\s@]+@[^\s@]+\.[^\s@]{2,}$'
+              disabled={!props.isEdit}
             />
           </label>
+          <span
+            className={`auth__error ${errors.email && 'auth__error_active'}`}
+          >
+            {errors.email}
+          </span>
+          {props.isEdit ? (
+            <div className='profile__btn-container'>
+              {props.error && (
+                <p className='profile__error'>{props.errorText}</p>
+              )}
+              {props.confirmation && (
+                <span className='profile__confirmation'>
+                  Данные успешно сохранены
+                </span>
+              )}
+              <button
+                type='submit'
+                className='button-opacity profile__btn-save'
+                disabled={!buttonIsValid}
+              >
+                Сохранить
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
         </form>
-
-        {isEdit ? (
-          <div className='profile__btn-container'>
-            <p className='profile__error'>
-              При обновлении профиля произошла ошибка.
-            </p>
-            <button type='submit' className='button-opacity profile__btn-save'>
-              Сохранить
-            </button>
-          </div>
-        ) : (
+        {!props.isEdit && (
           <div className='profile__btn-container'>
             <button
-              onClick={handleClickEdit}
+              onClick={props.editProfile}
               type='button'
               className='link-opacity profile__edit'
             >
               Редактировать
             </button>
-            <Link to='/' className='link-opacity profile__link'>
+            <Link
+              to='/'
+              onClick={props.signOut}
+              className='link-opacity profile__link'
+            >
               Выйти из аккаунта
             </Link>
           </div>
